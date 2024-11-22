@@ -3,6 +3,7 @@
 body,
 html {
     height: 100%;
+    width: 100%;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
 
 }
 
-header,
+.header,
 footer {
     background-color: #292929;
     color: white;
@@ -24,14 +25,15 @@ footer {
     margin: 0;
 }
 
-header {
-    margin-bottom: 1.5em;
-}
-
 footer {
     margin-top: 1.5em;
     padding: 1em;
     justify-content: center;
+}
+
+header li {
+    list-style-type: none;
+    display: inline;
 }
 
 header a {
@@ -48,6 +50,19 @@ header h2 {
     text-align: center;
     margin: 0;
 }
+
+button {
+    background-color: #F15050;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #a73e3e;
+}
+
 
 #signed-in {
     display: none;

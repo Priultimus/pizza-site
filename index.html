@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizza Shop</title>
     <link rel="stylesheet" type="text/css" href="css/globals.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <header>
+    <header class="header">
         <div id="wordmark">
             <img src="images/logo.svg" alt="Pizza Shop Logo">
             <h2>PIZZA SHOP</h2>
@@ -17,6 +18,7 @@
         <a class="sign-in" href="#">SIGN IN</a>
         <a id="signed-in" href="#">SIGNED IN AS: NAME</a>
     </header>
+
     <main>
         <div class="upper">
             <h1>SATISIFY YOUR CRAVINGS</h1>
@@ -66,13 +68,15 @@
             </div>
             <div class="go-to-menu">
                 <h2>Still not satisfied?</h2>
-                <button class="cta-long">Click here to go to our menu</button>
+                <button class="cta-long" onClick="location.href='/menu.html'">Click here to go to our menu</button>
             </div>
         </div>
     </main>
+
     <footer>
         <p>©️ 2024</p>
     </footer>
+
 </body>
 
 </html>

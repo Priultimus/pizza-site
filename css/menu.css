@@ -1,0 +1,125 @@
+main {
+    max-height: 100%;
+}
+
+.menu,
+main h1 {
+    padding: 0 4em;
+}
+
+.menu {
+    max-height: 100%;
+}
+
+.menu-subheader {
+    background-color: #545454;
+    display: flex;
+    gap: 5em;
+    justify-content: center;
+    align-items: center;
+    padding: 0.3em;
+    position: sticky;
+    top: 0;
+}
+
+.menu-subheader-option {
+    background-color: #545454;
+    color: white;
+    font-weight: 700;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5em 2em;
+}
+
+.selected {
+    background-color: #F15050;
+}
+
+.menu-subheader-option:hover {
+    cursor: pointer;
+    background-color: #a73e3e;
+}
+
+.menu-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-height: 100%;
+}
+
+.menu-card-wrapper {
+    background-color: #292929;
+    color: white;
+    padding: 1em 1em 1em 1em;
+    margin: 1em;
+    border-radius: 13px;
+    align-items: center;
+    gap: 0.5em;
+    display: grid;
+    justify-content: center;
+}
+
+.menu-card {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+}
+
+.menu-card h3 {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.menu-card h3,
+.menu-card p {
+    margin: 0;
+    padding: 0;
+}
+
+.menu-card-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    align-items: center;
+}
+
+.menu-card-image {
+    grid-row: span 2;
+}
+
+.menu-card-stars {
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+}
+
+.menu-card-button {
+    background-color: #F2F2F2;
+    color: black;
+    font-size: 1.2em;
+    font-weight: 700;
+    padding: 0.3em 4em;
+    justify-self: center;
+    align-self: end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.menu-card-button:hover {
+    cursor: pointer;
+    background-color: #d9d9d9;
+}
+
+/* Set these to hidden by default */
+.menu-card-reviews {
+    display: none;
+}
+
+.cart {
+    display: none;
+}
