@@ -26,7 +26,6 @@ footer {
 }
 
 footer {
-    margin-top: 1.5em;
     padding: 1em;
     justify-content: center;
 }
@@ -78,4 +77,70 @@ button:hover {
 #wordmark h2 {
     text-align: center;
     align-self: center;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.sign-in-form {
+    background-color: #292929;
+    border-radius: 13px;
+    padding: 2em;
+    margin: 0 20em 0 20em;
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-in-form h1 {
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}
+
+.sign-in-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-self: center;
+}
+
+.sign-in-item,
+#sign-in-submit {
+    margin: 1em;
+}
+
+.sign-in-item label[for="email"],
+.sign-in-item label[for="password"] {
+    color: white;
+    font-weight: 600;
+}
+
+.sign-in-item input[type="email"],
+.sign-in-item input[type="password"] {
+    border-radius: 4px;
+    border: 1.5px solid #AEAEAE;
+    padding: 0.7em;
+}
+
+.sign-in-item p {
+    color: white;
+    font-weight: 600;
+    align-self: center;
+    justify-self: center;
+}
+
+.sign-in-form p>a {
+    color: #F15050;
+    font-weight: 700;
 }

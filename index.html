@@ -7,6 +7,7 @@
     <title>Pizza Shop</title>
     <link rel="stylesheet" type="text/css" href="css/globals.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="scripts/global.js" defer></script>
 </head>
 
 <body>
@@ -16,6 +17,21 @@
             <h2>PIZZA SHOP</h2>
         </div>
         <a class="sign-in" href="#">SIGN IN</a>
+        <div class="modal">
+            <form class="sign-in-form">
+                <h1>Welcome Back</h1>
+                <div class="sign-in-item">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                </div>
+                <div class="sign-in-item">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" id="sign-in-submit" class="cta-large">SIGN IN</button>
+                <p>No account?<a href="#">Make an account <u>here</u></a></p>
+            </form>
+        </div>
         <a id="signed-in" href="#">SIGNED IN AS: NAME</a>
     </header>
 
