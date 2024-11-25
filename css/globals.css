@@ -6,12 +6,15 @@ html {
     width: 100%;
 }
 
+textarea::placeholder,
+body {
+    font-family: "Inter";
+}
+
 body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     margin: 0;
-    font-family: "Inter";
-
 }
 
 .header,
@@ -79,6 +82,14 @@ button:hover {
     align-self: center;
 }
 
+.hidden {
+    display: none;
+}
+
+.has-error {
+    border: 2px solid red !important;
+}
+
 .modal {
     display: none;
     position: absolute;
@@ -91,56 +102,126 @@ button:hover {
     overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
 }
 
-.sign-in-form {
+.modal.visible {
+    display: flex;
+}
+
+.modal-close {
+    background-color: transparent;
+    color: white;
+    font-size: 2em;
+    align-self: end;
+    justify-self: end;
+    margin: 0.5em;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-close:hover {
+    background-color: transparent;
+    color: grey;
+}
+
+.modal-content {
     background-color: #292929;
     border-radius: 13px;
     padding: 2em;
-    margin: 0 20em 0 20em;
-    display: flex;
-    flex-direction: column;
+    width: 30%;
+    text-align: center;
+    align-self: center;
 }
 
-.sign-in-form h1 {
+.modal-form {
+    display: none;
+}
+
+.modal-form.visible {
+    display: grid;
+}
+
+.modal-content h1 {
     text-align: center;
     font-weight: 700;
     color: white;
+    margin: 0;
+    margin-bottom: 0.8em;
 }
 
-.sign-in-item {
+.modal-item {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-    justify-self: center;
 }
 
-.sign-in-item,
-#sign-in-submit {
-    margin: 1em;
+.sign-up.modal-item,
+.sign-in.modal-item {
+    margin-bottom: 1em;
 }
 
-.sign-in-item label[for="email"],
-.sign-in-item label[for="password"] {
+.modal-item label {
+    text-align: left;
+}
+
+.double {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.double-input {
+    padding: 0.7em 5em 0.7em 0.7em !important;
+}
+
+.account-prompt {
+    margin: 0;
+    padding: 0;
+}
+
+.account-prompt a {
+    margin: 0;
+    padding: 0;
+}
+
+.modal-submit {
+    background-color: #F15050;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em;
+    font-weight: 600;
+    font-size: 1.6em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    align-self: end;
+}
+
+.sign-in.modal-item label {
     color: white;
     font-weight: 600;
 }
 
-.sign-in-item input[type="email"],
-.sign-in-item input[type="password"] {
+.modal-item input {
     border-radius: 4px;
     border: 1.5px solid #AEAEAE;
     padding: 0.7em;
 }
 
-.sign-in-item p {
+.modal-item p {
     color: white;
     font-weight: 600;
     align-self: center;
     justify-self: center;
 }
 
-.sign-in-form p>a {
+.modal-form p>a {
     color: #F15050;
-    font-weight: 700;
+}
+
+.error-message {
+    padding: 0;
+    margin: 0;
 }
