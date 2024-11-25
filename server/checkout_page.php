@@ -3,10 +3,6 @@
 require_once('../database/database.php');
 $db = db_connect();
 
-// echo "<pre>";
-// print_r($_SERVER);
-// echo "</pre>";
-
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") { //Making sure data is submitted
     $cc_num = $_POST["cc"];
@@ -21,9 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") { //Making sure data is submitted
     $sql = "INSERT INTO payments (orderID, cc_number, expiration_date, cvv_number, billing_fullname, 
                                     billing_street, billing_city, billing_province, billing_postal) 
                                     VALUES('1', '$cc_num', '$exp', '$cvv', '$name', '$address', '$city', '$province', '$postal')";
-                //  VALUES('1', '1234123412341234', '04/29', '129', 'gabe rai', '5 main st.', 'Ottawa', 'ON', 'A1A-1A1')";
-                        
-                
+                                    
     $result = mysqli_query($db, $sql);
     $id = mysqli_insert_id($db);
     
