@@ -1,5 +1,16 @@
 let menuItems = document.querySelectorAll(".menu-card-wrapper");
 let categoryButtons = document.querySelectorAll(".menu-subheader-option");
+let menuSearchTip = document.querySelector(".menu-search-tip");
+
+menuSearchTip.addEventListener("click", (e) => {
+    let url = new URL(window.location.href);
+    url.searchParams.delete("search");
+    if (url.searchParams.has("category") && url.searchParams.get("category") === "all") {
+        url.searchParams.delete("category");
+    }
+    window.history.pushState({}, "", url);
+    window.location.reload();
+});
 
 menuItems.forEach(item => {
     item.addEventListener("click", (e) => { safeToClick(e.target) ? toggleExpanded(item) : null });
@@ -34,6 +45,14 @@ function updateCategory(category) {
     categoryButtons.forEach(button => {
         if (button.dataset.category === category) {
             button.classList.add("selected");
+            let url = new URL(window.location.href);
+            if (!(category === "all")) {
+                url.searchParams.set("category", category);
+            } else {
+                url.searchParams.delete("category");
+            }
+            window.history.pushState({}, "", url);
+            window.location.reload();
         } else {
             button.classList.remove("selected");
         }
@@ -57,3 +76,15 @@ categoryButtons.forEach(button => {
         updateCategory(category);
     })
 })
+
+window.addEventListener("keydown", (e) => {
+    let url = new URL(window.location.href);
+    if (e.key === "Escape" && !(document.querySelector(".modal.visible")) && url.searchParams.has("search")) {
+        url.searchParams.delete("search");
+        if (url.searchParams.has("category") && url.searchParams.get("category") === "all") {
+            url.searchParams.delete("category");
+        }
+        window.history.pushState({}, "", url);
+        window.location.reload();
+    }
+});

@@ -1,8 +1,19 @@
 <?php require_once('../server/menu_items.php');
 
 $search = null;
-if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("search", $_GET)) {
-    $search = $_GET["search"];
+$category = 'all';
+$title_text = "OUR MENU";
+$visible = '';
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    if (array_key_exists("search", $_GET)) {
+        $search = $_GET["search"]; 
+        $visible = 'visible';
+        $title_text = "Showing results for: $search";
+    }
+
+    if (array_key_exists("category", $_GET)) {
+        $category = $_GET["category"];
+    }
 }
 
 function menuMaker($category) { 
@@ -21,27 +32,6 @@ function menuMaker($category) {
     }
 }
 
-// if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("search", $_GET)) {
-//     $search = $_GET["search"];
-//     $menuItems = fetchMenuItemsBySearch($search);
-//     foreach ($menuItems as $itemId => $item) {
-//         echo "
-//         <div class='menu-card-wrapper' id='$itemId'>
-//           $item";
-//         echo returnWholeReviewElement($itemId);
-//         echo "</div>";
-//     }
-// }
-
-$category = "all";
-
-if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("category", $_GET)) {
-    global $category;
-    $category = $_GET["category"];
-    echo "<script>
-    updateCategory('$category');
-    </script>";
-}
 ?>
 
                           
@@ -64,18 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("category", $_GET)) 
     <main>
         <header class="menu-subheader">
             <div class="menu-options">
-                <button data-category="all" class="menu-subheader-option selected">ALL</button>
-                <?php echo getCategories() ?>
+                <button data-category="all" class="menu-subheader-option <?php if ($category == 'all') {echo 'selected';} ?>">ALL</button>
+                <?php echo getCategories($category) ?>
             </div>
             <form class="menu-search-wrapper" method="GET">
                 <input class="menu-search" type="text" id="search" name="search"
                     placeholder="FIND YOUR PERFECT MEAL..." <?php if (isset($search)) {echo "value='$search'";} ?>>
+                <input type="hidden" name="category" id="category" value="<?php echo $category; ?>">
                 <button type="submit" class="menu-search-button">
                     <img src="../images/search.svg" alt="Search Icon" />
                 </button>
             </form>
         </header>
-        <h1>OUR MENU</h1>
+        <div class='menu-title'>
+          <h1><?php echo $title_text ?></h1>
+          <a class="menu-search-tip <?php echo $visible ?>">Clear your search</a>
+        </div>
         <div class="menu">
             <div class="menu-cards">
                 <?php echo menuMaker($category); ?>
@@ -131,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("category", $_GET)) 
         
     </main>
     <?php include 'footer.php'; ?>
-    <script src="../scripts/menu.js"></script>
+    <script src='../scripts/menu.js'></script>
 </body>
 
 </html>

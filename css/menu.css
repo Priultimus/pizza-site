@@ -3,8 +3,12 @@ main {
 }
 
 .menu,
-main h1 {
+.menu-title {
     padding: 0 4em;
+}
+
+.menu-title h1 {
+    margin-bottom: 0.3em;
 }
 
 .menu {
@@ -54,6 +58,22 @@ main h1 {
 .menu-search:focus {
     outline: none;
     border: none;
+}
+
+.menu-search-tip {
+    color: #00AFFF;
+    font-size: 0.8em;
+    margin: 0;
+    display: none;
+    text-decoration: underline;
+}
+
+.menu-search-tip:hover {
+    cursor: pointer;
+}
+
+.menu-search-tip.visible {
+    display: block;
 }
 
 .menu-search-button {

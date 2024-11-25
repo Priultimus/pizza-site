@@ -3,15 +3,18 @@
 require_once('../database/database.php');
 $db = db_connect();
 
-function getCategories() {
+function getCategories($picked = null) {
     $query = 'SELECT DISTINCT category FROM menu_items';
     global $db;
     $result = mysqli_query($db, $query);
-
     while ($row = mysqli_fetch_assoc($result)) {
         $category = $row['category'];
         $categoryText = strtoupper($category);
-        echo "<button data-category='$category' class='menu-subheader-option'>{$categoryText}</button>";
+        $selected = '';
+        if (isset($picked) && $picked != 'all' && $picked == $category) {
+          $selected = " selected";
+        }
+        echo "<button data-category='$category' class='menu-subheader-option$selected'>{$categoryText}</button>";
     }
 }
 
@@ -162,7 +165,7 @@ function fetchMenuItemsByCategory($category) {
     if ($category == "all") {
         $query = "SELECT * FROM menu_items";
     } else {
-        $query = "SELECT * FROM menu_items WHERE category = $category";
+        $query = "SELECT * FROM menu_items WHERE category = '$category'";
     }
     global $db;
     $result = mysqli_query($db, $query);

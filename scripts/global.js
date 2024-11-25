@@ -17,6 +17,9 @@ function showModal(modal) {
 
 function hideModal() {
     modal = document.querySelector(".modal.visible");
+    if (!(modal)) {
+        return;
+    }
     console.log("modal departing")
     modal.classList.remove("visible");
     document.querySelector("body").classList.remove("no-scroll")
