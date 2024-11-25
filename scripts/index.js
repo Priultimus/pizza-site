@@ -3,7 +3,7 @@ let startOrder = document.querySelector(".cta-large");
 let orderTypeButton = document.querySelector(".order-type-button");
 let orderTypeOptions = document.querySelector(".order-type-options");
 
-mapboxsearch.config.accessToken = 'pk.token'
+mapboxsearch.config.accessToken = mapboxsearch.config.accessToken = 'pk.eyJ1IjoibGliZXJ0YiIsImEiOiJjbTN3M2E3eTExMTdpMm5wd2c3bXdtZDB0In0.ZMRFNzmM7NlWkYVetakZIQ'
 const autofill = mapboxsearch.autofill({
     options: {
         country: 'ca',
