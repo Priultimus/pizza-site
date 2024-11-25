@@ -23,10 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") { //Making sure data is submitted
     
     header("Location: confirmation.php?id=$id");
 } else {
-    header("Location: ../checkout.html");
+    header("Location: ../checkout.php");
     
 }
     
 
     
-

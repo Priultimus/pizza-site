@@ -12,12 +12,14 @@ let signUpLink = document.querySelector(".account-prompt.sign-up");
 function showModal(modal) {
     console.log("modal arriving");
     modal.classList.add("visible");
+    document.querySelector("body").classList.add("no-scroll")
 };
 
 function hideModal() {
     modal = document.querySelector(".modal.visible");
     console.log("modal departing")
     modal.classList.remove("visible");
+    document.querySelector("body").classList.remove("no-scroll")
 }
 
 function showSignUpForm() {
