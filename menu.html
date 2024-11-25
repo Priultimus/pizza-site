@@ -22,11 +22,20 @@
     </header>
     <main>
         <header class="menu-subheader">
-            <button class="menu-subheader-option selected">SPECIALS</button>
-            <button class="menu-subheader-option">PIZZAS</button>
-            <button class="menu-subheader-option">PASTAS</button>
-            <button class="menu-subheader-option">SALADS</button>
-            <button class="menu-subheader-option">DESSERTS</button>
+            <div class="menu-options">
+                <button class="menu-subheader-option selected">ALL</button>
+                <button class="menu-subheader-option">PIZZAS</button>
+                <button class="menu-subheader-option">PASTAS</button>
+                <button class="menu-subheader-option">SALADS</button>
+                <button class="menu-subheader-option">DESSERTS</button>
+            </div>
+            <form class="menu-search-wrapper" method="GET">
+                <input class="menu-search" type="text" id="search" name="search"
+                    placeholder="FIND YOUR PERFECT MEAL...">
+                <button type="submit" class="menu-search-button">
+                    <img src="images/search.svg" alt="Search Icon" />
+                </button>
+            </form>
         </header>
         <h1>OUR MENU</h1>
         <div class="menu">

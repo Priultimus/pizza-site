@@ -32,6 +32,43 @@ main h1 {
     padding: 0.5em 2em;
 }
 
+.menu-search-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.menu-search {
+    background-color: #292929;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 25em;
+    padding: 1em 1em 1em 0.5em;
+}
+
+.menu-search::placeholder {
+    font-weight: 700;
+}
+
+.menu-search:focus {
+    outline: none;
+    border: none;
+}
+
+.menu-search-button {
+    background-color: #292929;
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-search-button:hover {
+    cursor: pointer;
+    background-color: #3A3A3A;
+}
+
 .selected {
     background-color: #F15050;
 }
