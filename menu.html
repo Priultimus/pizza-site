@@ -68,14 +68,71 @@
                             <span>Add to Cart</span>
                         </button>
                     </div>
-
                     <div class="menu-card-reviews">
-                        <div class="review-panel">
-                            <h1>ITEM REVIEWS</h1>
-                            <button class="review-button">CREATE REVIEW</button>
-                        </div>
+                        <h1 class="reviews-title">ITEM REVIEWS</h1>
                         <div class="reviews">
+                            <form class="review create-review-card">
+                                <div class="create-review review-details">
+                                    <input class="create-review-name" type="text" id="your-name" name="your-name"
+                                        placeholder="Enter your name" />
+                                    <div class="create-review-stars">
+                                        <input class="radio-star" checked type="radio" id="star0" name="rating"
+                                            value="0" autocomplete="off" />
+                                        <label class="star-label hidden"></label>
+                                        <input class="radio-star" type="radio" id="star1" name="rating" value="1" />
+                                        <label class="star-label" for="star1" title="1 star">
+                                            <svg class="star-svg" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </label>
+                                        <input class="radio-star" type="radio" id="star2" name="rating" value="2" />
+                                        <label class="star-label" for="star2" title="2 stars">
 
+                                            <svg class="star-svg" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </label>
+                                        <input class="radio-star" type="radio" id="star3" name="rating" value="3" />
+                                        <label class="star-label" for="star3" title="3 stars">
+
+                                            <svg class="star-svg" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </label>
+                                        <input class="radio-star" type="radio" id="star4" name="rating" value="4" />
+                                        <label class="star-label" for="star4" title="4 stars">
+
+                                            <svg class="star-svg" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </label>
+                                        <input class="radio-star" type="radio" id="star5" name="rating" value="5" />
+                                        <label class="star-label" for="star5" title="5 stars">
+                                            <svg class="star-svg" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </label>
+                                    </div>
+                                </div>
+                                <textarea class="create-review-text" id="your-review" name="your-review"
+                                    placeholder="Tell us what you think here!"></textarea>
+                                <button type="submit" class="create-review-submit">SUBMIT</button>
+                            </form>
                             <div class="review">
                                 <div class="review-details">
                                     <h2>Peter J.</h2>

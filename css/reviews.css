@@ -75,7 +75,6 @@
 }
 
 .review-button {
-    padding: 0.3em 1em;
     margin: 0;
     background-color: #FFF;
     color: #000;
@@ -87,17 +86,20 @@
     justify-content: space-between;
 }
 
+@media only screen and (max-width: 2000px) {
+    .create-review.review-details {
+        flex-direction: column;
+        gap: 0.3em;
+    }
+}
+
 .review-details p {
     margin: 0;
     padding: 0;
 }
 
-.review-panel {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-}
 
-.review-panel h1 {
+.reviews-title {
     margin: 0;
     padding: 0;
     font-size: 1.7em;
@@ -106,4 +108,68 @@
 .review-date {
     font-size: 0.8em;
     color: #666;
+}
+
+.create-review-name,
+.create-review-text {
+    border: 1px solid #C3C3C3;
+    border-radius: 4px;
+    resize: none;
+}
+
+
+.create-review-name::placeholder,
+.create-review-text::placeholder {
+    color: #A1A1A1;
+}
+
+.create-review-name {
+    margin: 0.3em 0 0.3em 0;
+}
+
+.create-review-submit {
+    margin: 0 8em;
+    padding: 0.3em 0.5em;
+    font-weight: 700;
+    align-self: center;
+}
+
+.create-review-stars {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    gap: 0.5em;
+    width: max-content;
+    position: relative;
+}
+
+.star-label.hidden {
+    display: none;
+}
+
+.star-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* for every selected star, set all the following ones to be unselected */
+
+.radio-star:checked+.star-label~.star-label * {
+    fill: none;
+    stroke: #000;
+    stroke-width: 0.5px;
+}
+
+.radio-star {
+    position: fixed;
+    opacity: 0;
+    width: 0;
+}
+
+.star-label svg path {
+    fill: #F4AA2A;
+    stroke: none;
+    stroke-width: none;
 }
