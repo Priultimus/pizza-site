@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/globals.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.24/web.js"></script>
+    <script src="scripts/signup.js" defer></script>
 </head>
 
 <body>
@@ -40,7 +41,7 @@
                 <p class="account-prompt sign-up">No account? <a href="#">Make an account
                         <u>here!</u></a></p>
             </form>
-            <form class="sign-up modal-content modal-form" aria-modal="true">
+            <form class="sign-up modal-content modal-form" aria-modal="true" action = "/server/signup.php" method = "POST" onsubmit = "return validateSignup()">
                 <button type="button" class="modal-close">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.00012207" y="17.6777" width="25" height="2.5" rx="1"
@@ -53,27 +54,27 @@
                 <div class="sign-up modal-item double">
                     <div class="modal-item">
                         <label for="first-name">First Name</label>
-                        <input class="double-input" type="text" id="first-name" name="first-name" placeholder="John">
+                        <input class="double-input" type="text" id="first-name" name="first-name" placeholder="John" onblur = "validateNameField(this)" onfocus="onFocused(this)" required>
                     </div>
                     <div class="modal-item">
                         <label for="last-name">Last Name</label>
-                        <input class="double-input" type="text" id="last-name" name="last-name" placeholder="Doe">
+                        <input class="double-input" type="text" id="last-name" name="last-name" placeholder="Doe" onblur = "validateNameField(this)" onfocus="onFocused(this)" required>
                     </div>
                 </div>
                 <div class="sign-up modal-item">
                     <label for="email">Email</label>
-                    <input type="email" id="sign-up-email" name="email" placeholder="john.doe@example.com">
+                    <input type="email" id="sign-up-email" name="email" placeholder="john.doe@example.com" onblur = "validateEmailField(this)" onfocus="onFocused(this)" required>
                 </div>
                 <div class="sign-up modal-item double">
                     <div class="modal-item">
                         <label for="password">Password</label>
                         <input class="double-input" type="password" id="sign-up-password" name="password"
-                            placeholder="Enter your password">
+                            placeholder="Enter your password" onblur="validatePasswordField(this)"onfocus="onFocused(this)" required>
                     </div>
                     <div class="modal-item">
                         <label for="confirm-password">Confirm Password</label>
                         <input class="double-input" type="password" id="sign-up-confirm-password"
-                            name="confirm-password" placeholder="Re-enter your password">
+                            name="confirm-password" placeholder="Re-enter your password" onblur="matchPasswordField()" onfocus="onFocused(this)" required>
                     </div>
                 </div>
                 <button type="submit" id="sign-up-submit" class="modal-submit">Submit</button>
