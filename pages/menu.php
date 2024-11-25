@@ -26,7 +26,7 @@ function menuMaker($category) {
     foreach ($menuItems as $itemId => $item) {
         echo "
         <div class='menu-card-wrapper' id='$itemId'>
-          $item";
+        $item";
         echo returnWholeReviewElement($itemId);
         echo "</div>";
     }
@@ -34,7 +34,6 @@ function menuMaker($category) {
 
 ?>
 
-                          
 <!DOCTYPE html>
 <html lang="en">
 
@@ -139,7 +138,7 @@ if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
                 toggleExpanded(elem, force=true);
                 elem.scrollIntoView();
             });
-          </script>";
+            </script>";
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && array_key_exists("your-name", $_POST)) {
@@ -154,12 +153,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && array_key_exists("your-name", $_POST
     $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
     $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
     echo "<script>
-      alert('test');
-      let wrapper = document.getElementById('$itemId');
-      let child = wrapper.querySelector('.menu-card-reviews');
-      child.innerHTML = '$test';
-      location.href='../pages/menu.php?item_id=$itemId';
-      wrapper.scrollIntoView();
+        alert('test');
+        let wrapper = document.getElementById('$itemId');
+        let child = wrapper.querySelector('.menu-card-reviews');
+        child.innerHTML = '$test';
+        location.href='../pages/menu.php?item_id=$itemId';
+        wrapper.scrollIntoView();
     </script>";
     
 }
