@@ -35,6 +35,12 @@ select {
     flex-direction: column;
 }
 
+.create-order-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+}
+
 .order-type-button {
     padding: 0.7em 1em;
     text-align: left;
