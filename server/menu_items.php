@@ -15,6 +15,33 @@ function getCategories() {
     }
 }
 
+function calcRating($rating) {
+  if (empty($rating) || $rating >= 5) {
+            $rating = 5; // :)
+        } elseif ($rating >= 4.5 ) {
+            $rating = 4.5;
+        } elseif ($rating >= 4 ) {
+            $rating = 4;
+        } elseif ($rating >= 3.5) {
+            $rating = 3.5;
+        } elseif ($rating >= 3 ) {
+            $rating = 3;
+        } elseif ($rating >= 2.5 ) {
+            $rating = 2.5;
+        } elseif ($rating >= 2 ) {
+            $rating = 2;
+        } elseif ($rating >= 1.5 ) {
+            $rating = 1.5;
+        } elseif ($rating >= 1 ) {
+            $rating = 1;
+        } elseif ($rating >= 0.5 ) {
+            $rating = 0.5;
+        } else {
+            $rating = 0;
+        }
+      return $rating;
+}
+
 function itemIdExists($itemId) {
     $query = "SELECT * FROM menu_items WHERE itemID = $itemId";
     global $db;
@@ -53,43 +80,43 @@ function returnWholeReviewElement($itemId) {
       <div class='reviews'>
         <form class='review create-review-card' method='POST'>
           <div class='create-review review-details'>
-            <input class='create-review-name' type='text' id='your-name' name='your-name' placeholder='Enter your name' />
+            <input class='create-review-name' type='text' id='your-name-$itemId' name='your-name' placeholder='Enter your name' />
             <div class='create-review-stars'>
-              <input class='radio-star' checked type='radio' id='star0' name='rating' value='0' autocomplete='off' />
+              <input class='radio-star' disabled hidden checked type='radio' id='star0-$itemId' name='rating' value='0' autocomplete='off' />
               <label class='star-label hidden'></label>
-              <input class='radio-star' type='radio' id='star1' name='rating' value='1' />
-              <label class='star-label' for='star1' title='1 star'>
+              <input class='radio-star' type='radio' id='star1-$itemId' name='rating' value='1' />
+              <label class='star-label' for='star1-$itemId' title='1 star'>
                   <svg class='star-svg' width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <path d='M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z' fill='currentColor' />
                 </svg>
               </label>
-              <input class='radio-star' type='radio' id='star2' name='rating' value='2' />
-              <label class='star-label' for='star2' title='2 stars'>
+              <input class='radio-star' type='radio' id='star2-$itemId' name='rating' value='2' />
+              <label class='star-label' for='star2-$itemId' title='2 stars'>
                 <svg class='star-svg' width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <path d='M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z' fill='currentColor' />
                 </svg>
               </label>
-              <input class='radio-star' type='radio' id='star3' name='rating' value='3' />
-              <label class='star-label' for='star3' title='3 stars'>
+              <input class='radio-star' type='radio' id='star3-$itemId' name='rating' value='3' />
+              <label class='star-label' for='star3-$itemId' title='3 stars'>
                 <svg class='star-svg' width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <path d='M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z' fill='currentColor' />
                 </svg>
               </label>
-              <input class='radio-star' type='radio' id='star4' name='rating' value='4' />
-              <label class='star-label' for='star4' title='4 stars'>
+              <input class='radio-star' type='radio' id='star4-$itemId' name='rating' value='4' />
+              <label class='star-label' for='star4-$itemId' title='4 stars'>
                 <svg class='star-svg' width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <path d='M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z' fill='currentColor' />
                 </svg>
               </label>
-              <input class='radio-star' type='radio' id='star5' name='rating' value='5' />
-              <label class='star-label' for='star5' title='5 stars'>
+              <input class='radio-star' type='radio' id='star5-$itemId' name='rating' value='5' />
+              <label class='star-label' for='star5-$itemId' title='5 stars'>
                 <svg class='star-svg' width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'> 
                   <path d='M7.67591 0.420309L9.25493 3.61983C9.36474 3.84235 9.57705 3.99655 9.82265 4.03218L13.3536 4.54528C13.9721 4.63522 14.2189 5.3951 13.7715 5.8311L11.2165 8.32156C11.039 8.49474 10.9578 8.74442 10.9998 8.98886L11.6029 12.5055C11.7086 13.1214 11.062 13.591 10.5089 13.3004L7.35088 11.6402C7.13127 11.5249 6.86873 11.5249 6.64912 11.6402L3.49108 13.3004C2.93797 13.5913 2.2914 13.1214 2.39712 12.5055L3.00017 8.98886C3.04222 8.74442 2.96104 8.49474 2.78348 8.32156L0.228484 5.8311C-0.218911 5.3948 0.0278572 4.63493 0.646383 4.54528L4.17735 4.03218C4.42295 3.99655 4.63526 3.84235 4.74507 3.61983L6.32409 0.420309C6.60035 -0.140103 7.39936 -0.140103 7.67591 0.420309Z' fill='currentColor' />
                 </svg>
               </label>
             </div>
           </div>
-          <textarea class='create-review-text' id='your-review' name='your-review' placeholder='Tell us what you think here!'></textarea>
+          <textarea class='create-review-text' id='your-review-$itemId' name='your-review' placeholder='Tell us what you think here!'></textarea>
           <input type='hidden' name='item-id' value='$itemId' />
           <button type='submit' class='create-review-submit'>SUBMIT</button>
         </form>";
@@ -109,30 +136,7 @@ function fetchMenuItemById($itemId) {
     $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $itemId";
     $ratingResult = mysqli_query($db, $ratingQuery);
     $ratingRow = mysqli_fetch_assoc($ratingResult);
-    $rating = $ratingRow['rating'];
-    if (empty($rating) || $rating >= 5) {
-        $rating = 5; // :D
-    } elseif ($rating >= 4.5 ) {
-        $rating = 4.5;
-    } elseif ($rating >= 4 ) {
-        $rating = 4;
-    } elseif ($rating >= 3.5) {
-        $rating = 3.5;
-    } elseif ($rating >= 3 ) {
-        $rating = 3;
-    } elseif ($rating >= 2.5 ) {
-        $rating = 2.5;
-    } elseif ($rating >= 2 ) {
-        $rating = 2;
-    } elseif ($rating >= 1.5 ) {
-        $rating = 1.5;
-    } elseif ($rating >= 1 ) {
-        $rating = 1;
-    } elseif ($rating >= 0.5 ) {
-        $rating = 0.5;
-    } else {
-        $rating = 0;
-    }
+    $rating = calcRating($ratingRow['rating']);
     $image = $row['image'];
     return "<div class='menu-card'>
               <div class='menu-card-panel'>
@@ -171,30 +175,7 @@ function fetchMenuItemsByCategory($category) {
         $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $id";
         $ratingResult = mysqli_query($db, $ratingQuery);
         $ratingRow = mysqli_fetch_assoc($ratingResult);
-        $rating = $ratingRow['rating'];
-        if (empty($rating) || $rating >= 5) {
-            $rating = 5; // :)
-        } elseif ($rating >= 4.5 ) {
-            $rating = 4.5;
-        } elseif ($rating >= 4 ) {
-            $rating = 4;
-        } elseif ($rating >= 3.5) {
-            $rating = 3.5;
-        } elseif ($rating >= 3 ) {
-            $rating = 3;
-        } elseif ($rating >= 2.5 ) {
-            $rating = 2.5;
-        } elseif ($rating >= 2 ) {
-            $rating = 2;
-        } elseif ($rating >= 1.5 ) {
-            $rating = 1.5;
-        } elseif ($rating >= 1 ) {
-            $rating = 1;
-        } elseif ($rating >= 0.5 ) {
-            $rating = 0.5;
-        } else {
-            $rating = 0;
-        }
+        $rating = calcRating($ratingRow['rating']);
         $image = $row['image'];
 
         $menuItems[$id] = "
