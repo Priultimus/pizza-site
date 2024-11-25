@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // SQL query to find the user by email
-    $stmt = $conn->prepare("SELECT loginID, password_hash, f_name, l_name FROM users WHERE email = ?");
+    $stmt = $db->prepare("SELECT loginID, password_hash, f_name, l_name FROM users WHERE email = ?");
     $stmt->bind_param("s", $input_email);
     $stmt->execute();
     $result = $stmt->get_result();

@@ -5,24 +5,24 @@ $db = db_connect();
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data and sanitize inputs
+    // Retrieve form data and sanitize inputs...
     $first_name = trim($_POST['first-name']);
     $last_name = trim($_POST['last-name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm-password'];
 
-    // Validate required fields
+    // Validate required fields...
     if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($confirm_password)) {
         die("All fields are required!");
     }
 
-    // Validate that passwords match
+    // Validate that passwords match...
     if ($password !== $confirm_password) {
         die("Passwords do not match!");
     }
 
-    // Check if the email already exists
+    // Check if the email already exists...
     $stmt = $db->prepare("SELECT email FROM logins WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert the user into the database
     $stmt = $db->prepare("INSERT INTO logins (f_name, l_name, email, password_hash) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
+    $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password); //use of bind_param to prevent SQL injection (treats input literally)
 
     if ($stmt->execute()) {
         // Automatically log the user in after registration
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['f_name'] = $first_name;
         $_SESSION['l_name'] = $last_name;
 
-        // Redirect to the landing page
+        // Redirect to the landing page...
         header("Location: ../index.php");
         exit();
     } else {

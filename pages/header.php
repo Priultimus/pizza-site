@@ -1,3 +1,8 @@
+<?php
+//Start the session to access session variables (loginID, f_name, l_name, email)
+session_start();
+?>
+
 <header class="header">
     <script src="../scripts/signup.js" defer></script>
     <div id="wordmark">
@@ -6,13 +11,14 @@
     </div>
     
 <!-- Conditional Display Based on User Login Status -->
-<?php 
+<?php
+    
     // Check if the user is logged in by verifying the session variable 'loginID'
     if (isset($_SESSION['loginID'])): ?>
         <!-- If logged in, display a link showing the user's name and a logout option -->
         <a id="signed-in" href="../server/logout.php">
             SIGNED IN AS: <?php 
-            // Use htmlspecialchars to prevent XSS attacks by escaping special characters
+            // Use htmlspecialchars to prevent Cross-Site Scripting attacks by escaping special characters
             echo htmlspecialchars($_SESSION['f_name']) . ' ' . htmlspecialchars($_SESSION['l_name']); ?>
         </a>
     <?php else: ?>
