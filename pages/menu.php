@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("category", $_GET)) 
 
 <body>
 
-    <?php include 'pages/header.php'; ?>
+    <?php include 'header.php'; ?>
 
     <main>
         <header class="menu-subheader">
