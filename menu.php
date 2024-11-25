@@ -1,29 +1,4 @@
 <?php require_once('./server/menu_items.php');
-if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
-    $item_id = $_GET["item_id"];
-    echo "<script>
-            let elem = document.getElementById('$item_id');
-            elem.classList.add('expanded');
-            elem.scrollIntoView();
-          </script>";
-}
-
-if (array_key_exists('your-name', $_GET)) {
-    $itemId = $_GET['item_id'];
-    $name = $_GET['your-name'];
-    $rating = $_GET['rating'];
-    $review = $_GET['your-review'];
-    $date = date('Y-m-d');
-    $query = "INSERT INTO reviews (itemID, name, rating, review_text, review_date) VALUES ('$item_id', '$name', '$rating', '$review', '$date')";
-    $result = mysqli_query($db, $query);
-    $reviews = returnWholeReviewElement($itemId);
-    echo "<script>
-      let wrapper = document.getElementById('$itemId');
-      let child = wrapper.querySelector('.menu-card-reviews');
-      wrapper.removeChild(child);
-      wrapper.appendChild($reviews);
-    </script>";
-}
 
 function menuMaker($category) { 
     $menuItems = fetchMenuItemsByCategory($category);
@@ -33,7 +8,7 @@ function menuMaker($category) {
           $item";
         echo returnWholeReviewElement($itemId);
         echo "</div>";
-}
+    }
 }
 ?>
 
@@ -73,7 +48,7 @@ function menuMaker($category) {
             </form>
         </header>
         <h1>OUR MENU</h1>
-        <div class="menu with-cart">
+        <div class="menu">
             <div class="menu-cards">
                 <?php echo menuMaker("all"); ?>
 
@@ -164,3 +139,37 @@ function menuMaker($category) {
 </body>
 
 </html>
+
+<?php 
+if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
+    $item_id = $_GET["item_id"];
+    echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let elem = document.getElementById('$item_id');
+                elem.classList.add('expanded');
+                elem.scrollIntoView();
+            });
+          </script>";
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && array_key_exists("your-name", $_POST)) {
+    $itemId = $_POST['item-id'];
+    $name = $_POST['your-name'];
+    $rating = $_POST['rating'];
+    $review = $_POST['your-review'];
+    $datetime = date("Y-m-d H:i:s");
+    $query = "INSERT INTO reviews (itemID, name, rating, review_text, review_datetime) VALUES ('$itemId', '$name', '$rating', '$review', '$datetime')";
+    $result = mysqli_query($db, $query);
+    $reviews = returnWholeReviewElement($itemId);
+    $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
+    $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
+    echo "<script>
+      alert('test');
+      let wrapper = document.getElementById('$itemId');
+      let child = wrapper.querySelector('.menu-card-reviews');
+      child.innerHTML = '$test';
+      location.href='/menu.php?item_id=$itemId';
+      wrapper.scrollIntoView();
+    </script>";
+    
+}

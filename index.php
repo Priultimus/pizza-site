@@ -60,7 +60,7 @@
                             <p>ITEM RATING AS STARS</p>
                         </div>
                     </div>
-                    <button class="menu-highlight-card-button">Find Out More</button>
+                    <button onclick="location.href='/menu.php?item_id=1'" class="menu-highlight-card-button">Find Out More</button>
                 </div>
                 <!-- Menu Card 2 -->
                 <div class="menu-card">
