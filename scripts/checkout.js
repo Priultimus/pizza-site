@@ -150,7 +150,7 @@ function validatePostalField(field){
 // Function responsible for validating the checkout form
 function validate() {
     let valid = true;
-
+    // If none of the functions are valid, set valid to false...preventing submission
     if (!(validateCreditCardField(cc) && validateExpirationDateField(exp) 
         && validateCVVField(cvv))) {
         valid = false;
@@ -159,7 +159,7 @@ function validate() {
     if (!checkbox.checked) {
         return valid
     }
-
+    // If none of the functions are valid, set valid to false...preventing submission
     if (!(validateNameField(nameField) && validateAddressField(address) 
         && validateCityField(city) && validatePostalField(postal) 
         && validateProvinceField(province))){
