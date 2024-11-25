@@ -51,7 +51,7 @@ function handleOption(opt) {
 
 
 function handleSubmit(form) {
-    const addressField = document.querySelector("#address");
+    const addressField = document.querySelector("#address-search");
     if (addressField) {
         addressField.remove();
     }

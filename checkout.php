@@ -11,14 +11,9 @@
 </head>
 
 <body>
-    <header class="header">
-        <div id="wordmark">
-            <img src="images/logo.svg" alt="Pizza Shop Logo">
-            <h2>PIZZA SHOP</h2>
-        </div>
-        <a class="sign-in" href="#">SIGN IN</a>
-        <a id="signed-in" href="#">SIGNED IN AS: NAME</a>
-    </header>
+
+    <?php include 'pages/header.php'; ?>
+
     <main class="order">
         <form class="form-wrapper" action = "/server/checkout_page.php" method ="POST" onsubmit="return validate()">
             <h1>PAYMENT TITLE</h1>
@@ -137,9 +132,7 @@
         </div>
 
     </main>
-    <footer>
-        <p>©️ 2024</p>
-    </footer>
+    <?php include 'pages/footer.php'; ?>
 </body>
 
 </html>
