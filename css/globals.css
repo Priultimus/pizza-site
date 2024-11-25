@@ -172,10 +172,6 @@ button:hover {
     justify-content: space-between;
 }
 
-.double-input {
-    padding: 0.7em 5em 0.7em 0.7em !important;
-}
-
 .account-prompt {
     margin: 0;
     padding: 0;
