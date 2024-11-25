@@ -1,5 +1,7 @@
 <?php 
-session_start();
+if (!(headers_sent())) {
+    session_start();
+}
 $href = '#';
 $text = 'SIGN IN';
 $class = 'sign-in-link';
@@ -32,12 +34,12 @@ if (isset($_SESSION['loginID'])) {
             </button>
             <h1>Welcome Back</h1>
             <div class="sign-in modal-item">
-                <label for="email">Email</label>
+                <label for="sign-in-email">Email</label>
                 <input type="email" id="sign-in-email" name="email" placeholder="john.doe@example.com">
             </div>
             <div class="sign-in modal-item">
-                <label for="password">Password</label>
-                <input type="password" id="sign-password" name="password" placeholder="Enter your password">
+                <label for="sign-in-password">Password</label>
+                <input type="password" id="sign-in-password" name="password" placeholder="Enter your password">
             </div>
             <button type="submit" id="sign-in-submit" class="modal-submit">Sign In</button>
             <p class="account-prompt sign-up">No account? <a href="#">Make an account <u>here!</u></a></p>
@@ -61,17 +63,17 @@ if (isset($_SESSION['loginID'])) {
                 </div>
             </div>
             <div class="sign-up modal-item">
-                <label for="email">Email</label>
+                <label for="sign-up-email">Email</label>
                 <input type="email" id="sign-up-email" name="email" placeholder="john.doe@example.com" onblur = "validateEmailField(this)" onfocus="onFocused(this)" required>
             </div>
             <div class="sign-up modal-item double">
                 <div class="modal-item">
-                    <label for="password">Password</label>
+                    <label for="sign-up-password">Password</label>
                     <input class="double-input" type="password" id="sign-up-password" name="password"
                             placeholder="Enter your password"  onblur = "validatePasswordField(this)" onfocus="onFocused(this)" required>
                 </div>
                 <div class="modal-item">
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="sign-up-confirm-password">Confirm Password</label>
                     <input class="double-input" type="password" id="sign-up-confirm-password"
                             name="confirm-password" placeholder="Re-enter your password"  onblur = "validateNameField(this)" onfocus="onFocused(this)" required>
                 </div>

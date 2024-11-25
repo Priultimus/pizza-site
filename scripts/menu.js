@@ -2,16 +2,31 @@ let menuItems = document.querySelectorAll(".menu-card-wrapper");
 let categoryButtons = document.querySelectorAll(".menu-subheader-option");
 
 menuItems.forEach(item => {
-    item.addEventListener("click", (e) => {
-        console.log(e.target);
-        if (e.target.classList.contains("menu-card-wrapper")) {
-            console.log("hit");
-            e.target.classList.remove("expanded");
-            console.log(e.target.classList);
-        }
-        item.classList.add("expanded");
-    })
-})
+    item.addEventListener("click", (e) => { safeToClick(e.target) ? toggleExpanded(item) : null });
+});
+
+function toggleExpanded(item, force = false) {
+    let was_expanded = item.classList.contains('expanded');
+    menuItems.forEach((menuItem) => {
+        menuItem.classList.remove('expanded');
+    });
+    if (!was_expanded || force) {
+        item.classList.add('expanded');
+    }
+
+}
+
+function safeToClick(target) {
+    let shouldApprove = true;
+    if (!(target.classList.length === 0)) {
+        target.classList.forEach((c) => {
+            if (c.includes('review') || c.includes('star') || c.includes('button')) {
+                shouldApprove = false;
+            }
+        });
+    }
+    return shouldApprove;
+}
 
 function updateCategory(category) {
     category = category.toLowerCase();
@@ -29,10 +44,8 @@ function updateCategory(category) {
             console.log("all");
             item.classList.remove("hidden");
         } else if (childItem.dataset.category === category) {
-            console.log(`show ${item.id}`);
             item.classList.remove("hidden");
         } else {
-            console.log(`hid ${item.id} category: ${childItem.dataset.category} statement: ${childItem.dataset.category === category}`);
             item.classList.add("hidden");
         }
     });

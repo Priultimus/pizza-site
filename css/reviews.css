@@ -31,6 +31,10 @@
     color: white;
 }
 
+.menu-card-wrapper.expanded>.menu-card>.menu-card-button:hover {
+    background-color: #289844;
+}
+
 .reviews {
     display: flex;
     flex-direction: column;

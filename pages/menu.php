@@ -1,7 +1,17 @@
 <?php require_once('../server/menu_items.php');
 
+$search = null;
+if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("search", $_GET)) {
+    $search = $_GET["search"];
+}
+
 function menuMaker($category) { 
-    $menuItems = fetchMenuItemsByCategory($category);
+    global $search;
+    if (isset($search)) {
+        $menuItems = fetchMenuItemsBySearch($search, $category);
+    } else {
+        $menuItems = fetchMenuItemsByCategory($category);
+    }
     foreach ($menuItems as $itemId => $item) {
         echo "
         <div class='menu-card-wrapper' id='$itemId'>
@@ -11,17 +21,17 @@ function menuMaker($category) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("search", $_GET)) {
-    $search = $_GET["search"];
-    $menuItems = fetchMenuItemsBySearch($search);
-    foreach ($menuItems as $itemId => $item) {
-        echo "
-        <div class='menu-card-wrapper' id='$itemId'>
-          $item";
-        echo returnWholeReviewElement($itemId);
-        echo "</div>";
-    }
-}
+// if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("search", $_GET)) {
+//     $search = $_GET["search"];
+//     $menuItems = fetchMenuItemsBySearch($search);
+//     foreach ($menuItems as $itemId => $item) {
+//         echo "
+//         <div class='menu-card-wrapper' id='$itemId'>
+//           $item";
+//         echo returnWholeReviewElement($itemId);
+//         echo "</div>";
+//     }
+// }
 
 $category = "all";
 
@@ -59,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && array_key_exists("category", $_GET)) 
             </div>
             <form class="menu-search-wrapper" method="GET">
                 <input class="menu-search" type="text" id="search" name="search"
-                    placeholder="FIND YOUR PERFECT MEAL...">
+                    placeholder="FIND YOUR PERFECT MEAL..." <?php if (isset($search)) {echo "value='$search'";} ?>>
                 <button type="submit" class="menu-search-button">
                     <img src="../images/search.svg" alt="Search Icon" />
                 </button>
@@ -132,7 +142,7 @@ if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
     echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 let elem = document.getElementById('$item_id');
-                elem.classList.add('expanded');
+                toggleExpanded(elem, force=true);
                 elem.scrollIntoView();
             });
           </script>";
