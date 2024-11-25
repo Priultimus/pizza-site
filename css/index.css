@@ -197,3 +197,62 @@ select {
     font-size: 1.4em;
     padding: 0.2em 2.5em;
 }
+
+
+@media only screen and (max-width: 867px) {
+    main h1 {
+        font-size: 3em;
+        font-weight: 900;
+        text-align: center;
+        margin: 0;
+    }
+
+    main h2 {
+        font-size: 1.8em;
+        font-weight: 800;
+        text-align: center;
+        margin: 0;
+    }
+
+    .menu-highlight-cards {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .lower {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .cta-large {
+        padding: 1em 2em 1em 2em;
+    }
+
+    .cta-long {
+        padding: 0.2em 2em;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .cta-large {
+        padding: 1em 1.5em 1em 1.5em;
+    }
+
+    .cta-long {
+        padding: 0.2em 0.5em;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .cta-long {
+        font-size: 1.7em;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .cta-long {
+        font-size: 1.4em;
+    }
+}

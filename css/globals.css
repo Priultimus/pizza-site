@@ -17,6 +17,10 @@ body {
     margin: 0;
 }
 
+.no-scroll {
+    overflow: hidden;
+}
+
 .header,
 footer {
     background-color: #292929;
@@ -47,7 +51,7 @@ header a {
 }
 
 header h2 {
-    font-size: 36px;
+    font-size: 2.2em;
     font-weight: 800;
     text-align: center;
     margin: 0;
@@ -75,6 +79,10 @@ button:hover {
     display: flex;
     margin: 0.5rem;
     gap: 1em;
+}
+
+#wordmark img {
+    width: 5vw;
 }
 
 #wordmark h2 {
@@ -156,6 +164,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    flex-shrink: 1;
 }
 
 .sign-up.modal-item,
@@ -220,4 +229,55 @@ button:hover {
 .error-message {
     padding: 0;
     margin: 0;
+}
+
+@media only screen and (max-width: 1500px) {
+    #wordmark img {
+        width: 6vw;
+    }
+
+    .double {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #wordmark img {
+        width: 7vw;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    #wordmark img {
+        width: 10vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    header h2 {
+        font-size: 1.8em;
+    }
+
+    .tag-line {
+        font-size: 1.2em;
+        margin: 0.5em;
+    }
+
+    #wordmark img {
+        width: 12vw;
+    }
+}
+
+@media only screen and (max-width: 430px) {
+    .header {
+        padding: 0 1em;
+    }
+
+    #wordmark h2 {
+        font-size: 1.6em;
+    }
+
+    #wordmark img {
+        display: none;
+    }
 }
