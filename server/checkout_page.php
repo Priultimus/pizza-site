@@ -4,7 +4,7 @@ require_once('../database/database.php');
 $db = db_connect();
 
 
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') { //Making sure data is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { //Making sure data is submitted
     // $cc_num = $_POST["cc"];
     // $exp = $_POST["exp"];
     // $cvv = $_POST["cvv"];
@@ -22,11 +22,11 @@ $db = db_connect();
     $result = mysqli_query($db, $sql);
     $id = mysqli_insert_id($db);
     
-    // header("Location: confirmation.php?id=$id");
-// } else {
-    // header("Location: ../checkout.html");
+    header("Location: confirmation.php?id=$id");
+} else {
+    header("Location: ../checkout.html");
     
-// }
+}
     
 
     
