@@ -19,7 +19,7 @@
         <a class="sign-in-link" href="#">SIGN IN</a>
         <div class="modal user-modal">
             <form class="sign-in modal-content modal-form visible" aria-modal="true">
-                <button class="modal-close">
+                <button type="button" class="modal-close">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.00012207" y="17.6777" width="25" height="2.5" rx="1"
                             transform="rotate(-45 0.00012207 17.6777)" fill="currentColor" />
@@ -40,8 +40,8 @@
                 <p class="account-prompt sign-up">No account? <a href="#">Make an account
                         <u>here!</u></a></p>
             </form>
-            <form class="sign-up modal-content modal-form">
-                <button class="modal-close">
+            <form class="sign-up modal-content modal-form" aria-modal="true">
+                <button type="button" class="modal-close">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.00012207" y="17.6777" width="25" height="2.5" rx="1"
                             transform="rotate(-45 0.00012207 17.6777)" fill="currentColor" />
@@ -62,7 +62,7 @@
                 </div>
                 <div class="sign-up modal-item">
                     <label for="email">Email</label>
-                    <input type="email" id="sign-up-email" name="email" placeholder="john.doe@example.com" required>
+                    <input type="email" id="sign-up-email" name="email" placeholder="john.doe@example.com">
                 </div>
                 <div class="sign-up modal-item double">
                     <div class="modal-item">

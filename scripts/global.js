@@ -1,7 +1,7 @@
 let userModal = document.querySelector(".user-modal");
-let showModalButton = document.querySelector(".sign-in-link");
-let closeModalButton = document.querySelector(".modal-close");
-let submitButton = document.querySelector(".modal-submit");
+let showModalButtons = document.querySelectorAll(".sign-in-link");
+let closeModalButtons = document.querySelectorAll(".modal-close");
+let submitButtons = document.querySelectorAll(".modal-submit");
 
 let signInForm = document.querySelector(".sign-in.modal-form");
 let signUpForm = document.querySelector(".sign-up.modal-form");
@@ -38,8 +38,8 @@ window.addEventListener("keydown", (e) => {
     e.key === "Escape" ? hideModal() : null
 });
 
-showModalButton.addEventListener("click", () => showModal(userModal));
-closeModalButton.addEventListener("click", hideModal);
-submitButton.addEventListener("click", hideModal);
+showModalButtons.forEach(button => button.addEventListener("click", () => showModal(userModal)));
+closeModalButtons.forEach(button => button.addEventListener("click", hideModal));
+submitButtons.forEach(button => button.addEventListener("click", hideModal));
 signInLink.addEventListener("click", showSignInForm);
 signUpLink.addEventListener("click", showSignUpForm);
