@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         // Automatically log the user in after registration
+        session_start();
         $_SESSION['loginID'] = $stmt->insert_id;
         $_SESSION['f_name'] = $first_name;
         $_SESSION['l_name'] = $last_name;

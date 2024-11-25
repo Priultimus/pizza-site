@@ -40,7 +40,9 @@ window.addEventListener("keydown", (e) => {
     e.key === "Escape" ? hideModal() : null
 });
 
-showModalButtons.forEach(button => button.addEventListener("click", () => showModal(userModal)));
+showModalButtons.forEach(button => button.addEventListener("click", (e) => {
+    showModal(userModal)
+}));
 closeModalButtons.forEach(button => button.addEventListener("click", hideModal));
 submitButtons.forEach(button => button.addEventListener("click", hideModal));
 signInLink.addEventListener("click", showSignInForm);

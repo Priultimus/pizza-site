@@ -1,25 +1,25 @@
+<?php 
+session_start();
+$href = '#';
+$text = 'SIGN IN';
+$class = 'sign-in-link';
+if (isset($_SESSION['loginID'])) {
+    $href = '../server/logout.php';
+    $name = htmlspecialchars($_SESSION['f_name']) . ' ' . htmlspecialchars($_SESSION['l_name']);
+    $text = 'SIGNED IN AS: ' . $name;
+    $class = 'signed-in-link';
+}
+?>
+
+<link rel="stylesheet" type="text/css" href="../css/globals.css">
+<script src="../scripts/global.js" defer></script>
 <header class="header">
     <script src="../scripts/signup.js" defer></script>
     <div id="wordmark">
-        <img src="images/logo.svg" alt="Pizza Shop Logo">
+        <img src="../images/logo.svg" alt="Pizza Shop Logo">
         <h2>PIZZA SHOP</h2>
     </div>
-    
-<!-- Conditional Display Based on User Login Status -->
-<?php 
-    // Check if the user is logged in by verifying the session variable 'loginID'
-    if (isset($_SESSION['loginID'])): ?>
-        <!-- If logged in, display a link showing the user's name and a logout option -->
-        <a id="signed-in" href="../server/logout.php">
-            SIGNED IN AS: <?php 
-            // Use htmlspecialchars to prevent XSS attacks by escaping special characters
-            echo htmlspecialchars($_SESSION['f_name']) . ' ' . htmlspecialchars($_SESSION['l_name']); ?>
-        </a>
-    <?php else: ?>
-        <!-- If not logged in, display the 'Sign In' link -->
-        <a class="sign-in-link" href="#">SIGN IN</a>
-    <?php endif; ?>
-
+        <a id='sign-in' class="<?php echo $class ?>" href="<?php echo $href ?>"><?php echo $text ?></a>
     <div class="modal user-modal">
         <form class="sign-in modal-content modal-form visible" aria-modal="true" action="../server/login.php" method="POST">
             <button type="button" class="modal-close">
@@ -80,5 +80,4 @@
             <p class="account-prompt sign-in">Already have an account? <a href="#">Sign in <u>here!</u></a></p>
         </form>
     </div>
-    <a id="signed-in" href="#">SIGNED IN AS: NAME</a>
 </header>

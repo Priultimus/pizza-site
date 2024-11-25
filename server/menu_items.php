@@ -1,14 +1,17 @@
 <?php 
 
-require_once('./database/database.php');
+require_once('../database/database.php');
 $db = db_connect();
 
 function getCategories() {
     $query = 'SELECT DISTINCT category FROM menu_items';
+    global $db;
     $result = mysqli_query($db, $query);
 
     while ($row = mysqli_fetch_assoc($result)) {
-        echo "<button class='menu-subheader-option'>{$row['category']}</button>";
+        $category = $row['category'];
+        $categoryText = strtoupper($category);
+        echo "<button data-category='$category' class='menu-subheader-option'>{$categoryText}</button>";
     }
 }
 
@@ -35,7 +38,7 @@ function fetchMenuItemReviews($menuItemID) {
             <div class='review'>
               <div class='review-details'>
                 <h2>$name</h2>
-                <img class='menu-card-stars' src='images/$rating-stars.svg' alt='Rating: $rating' />
+                <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
               </div>
               <p>$review</p>
               <p class='review-date'>$date</p>
@@ -133,12 +136,12 @@ function fetchMenuItemById($itemId) {
     $image = $row['image'];
     return "<div class='menu-card'>
               <div class='menu-card-panel'>
-                <img class='menu-card-image' src='$image' alt='$desc' />
+                <img class='menu-card-image' src='../$image' alt='$desc' />
                 <div class='menu-card-details'>
                   <h3>$name</h3>
                   <p>$desc</p>
                 </div>
-                <img class='menu-card-stars' src='images/$rating-stars.svg' alt='Rating: $rating' />
+                <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
               </div>
               <button class='menu-card-button'>
                 <svg width='25' height='23' viewBox='0 0 25 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -164,6 +167,7 @@ function fetchMenuItemsByCategory($category) {
         $id = $row['itemID'];
         $name = $row['name'];
         $desc = $row['description'];
+        $itemCategory = $row['category'];
         $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $id";
         $ratingResult = mysqli_query($db, $ratingQuery);
         $ratingRow = mysqli_fetch_assoc($ratingResult);
@@ -194,14 +198,14 @@ function fetchMenuItemsByCategory($category) {
         $image = $row['image'];
 
         $menuItems[$id] = "
-            <div class='menu-card'>
+            <div data-category='$itemCategory' class='menu-card'>
               <div class='menu-card-panel'>
-                <img class='menu-card-image' src='$image' alt='$desc' />
+                <img class='menu-card-image' src='../$image' alt='$desc' />
                 <div class='menu-card-details'>
                   <h3>$name</h3>
                   <p>$desc</p>
                 </div>
-                <img class='menu-card-stars' src='images/$rating-stars.svg' alt='Rating: $rating' />
+                <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
               </div>
               <button class='menu-card-button'>
                 <svg width='25' height='23' viewBox='0 0 25 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
