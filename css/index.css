@@ -30,88 +30,7 @@ select {
     /* remove default arrow */
 }
 
-.start-order {
-    display: flex;
-    flex-direction: column;
-}
 
-.create-order-title {
-    font-size: 2.5em;
-    font-weight: 700;
-    text-align: center;
-}
-
-.order-type-button {
-    padding: 0.7em 1em;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.2em;
-}
-
-
-.order-type-button p {
-    margin: 0;
-}
-
-.order-type-options {
-    display: none;
-    background-color: #292929;
-    color: white;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    padding: 1em 0;
-    gap: 0.5em;
-    margin: 0;
-    flex-direction: column;
-    justify-content: start;
-    text-align: left;
-    align-content: start;
-    list-style-type: none;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-}
-
-.order-type-options.visible {
-    display: flex;
-}
-
-.order-type-option {
-    padding: 0.3em 0.7em;
-    margin: 0;
-}
-
-.order-type-option:hover {
-    cursor: pointer;
-    background-color: #3D3D3D;
-}
-
-.modal-submit.disabled {
-    background-color: #A14040;
-    color: #B2B2B2;
-    cursor: not-allowed;
-}
-
-.address-autocomplete {
-    display: none;
-    outline: none;
-    border: none;
-    border-radius: 8px;
-    margin-top: 2em;
-    padding: 1em 9em 1em 1em;
-    background-color: #545454;
-    color: white;
-}
-
-.address-autocomplete::placeholder {
-    color: #E1E1E1;
-    font-size: 1.1em;
-}
-
-.address-autocomplete.visible {
-    display: block;
-}
 
 .upper {
     display: grid;
@@ -233,6 +152,10 @@ select {
     .cta-long {
         padding: 0.2em 2em;
     }
+
+    .menu-card {
+        margin: 1em;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -243,6 +166,7 @@ select {
     .cta-long {
         padding: 0.2em 0.5em;
     }
+
 }
 
 @media only screen and (max-width: 450px) {

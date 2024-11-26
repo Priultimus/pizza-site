@@ -129,9 +129,9 @@ function returnWholeReviewElement($itemId) {
         
 }
 
-function menuItemMaker($itemId, $name, $desc, $category, $rating, $image) {
+function menuItemMaker($itemId, $name, $desc, $price, $category, $rating, $image) {
     $rating = calcRating($rating);
-    return "<div data-category='$category' class='menu-card'>
+    return "<div id='menu-$itemId' data-name='$name' data-description-'$desc' data-price='$price' data-category='$category' data-img='$image' class='menu-card'>
               <div class='menu-card-panel'>
                 <img class='menu-card-image' src='../$image' alt='$desc' />
                 <div class='menu-card-details'>
@@ -148,9 +148,6 @@ function menuItemMaker($itemId, $name, $desc, $category, $rating, $image) {
                 </svg>
                 <span class='button-text'>Add to Cart</span>
               </button>
-              <button class='menu-card-button' style='margin-top:10px; background-color:crimson;' onclick='removeFromCart($itemId)'>
-                <span class='button-text'>Remove from Cart</span>
-              </button>
             </div>";
 }
 
@@ -164,9 +161,11 @@ function fetchMenuItemById($itemId) {
     $category = $row['category'];
     $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $itemId";
     $ratingResult = mysqli_query($db, $ratingQuery);
-    $rating = mysqli_fetch_assoc($ratingResult)['rating'];
+    $ratingRow = mysqli_fetch_assoc($ratingResult);
+    $rating = calcRating($ratingRow['rating']);
     $image = $row['image'];
-    return menuItemMaker($itemId, $name, $desc, $category, $rating, $image);
+    $price = $row['price'];
+    return menuItemMaker($itemId, $name, $desc, $price, $category, $rating, $image);
 }
 
 function fetchMenuItemsByCategory($category) {
@@ -188,8 +187,8 @@ function fetchMenuItemsByCategory($category) {
         $ratingRow = mysqli_fetch_assoc($ratingResult);
         $rating = calcRating($ratingRow['rating']);
         $image = $row['image'];
-
-        $menuItems[$id] = menuItemMaker($id, $name, $desc, $itemCategory, $rating, $image);
+        $price = $row['price'];
+        $menuItems[$id] = menuItemMaker($id, $name, $desc, $price, $itemCategory, $rating, $image);
     }
     return $menuItems;
 }
@@ -213,7 +212,8 @@ function fetchMenuItemsBySearch($searchQuery, $category = null) {
         $ratingRow = mysqli_fetch_assoc($ratingResult);
         $rating = calcRating($ratingRow['rating']);
         $image = $row['image'];
-        $item = menuItemMaker($id, $name, $desc, $itemCategory, $rating, $image);
+        $price = $row['price'];
+        $item = menuItemMaker($id, $name, $desc, $price, $itemCategory, $rating, $image);
         $menuItems[$id] = $item;
     }
     return $menuItems;

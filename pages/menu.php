@@ -41,8 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
             $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
             echo "<script>
+              document.addEventListener('DOMContentLoaded', () => {
               let wrapper = document.getElementById('$itemId');
               toggleExpanded(wrapper, force=true);
+              });
             </script>";
         } else {
             $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
@@ -84,6 +86,7 @@ function menuMaker($category) {
     <link rel="stylesheet" type="text/css" href="../css/menu.css">
     <link rel="stylesheet" type="text/css" href="../css/reviews.css">
     <link rel="stylesheet" type="text/css" href="../css/cart.css">
+    <script src="../scripts/cart.js" defer></script>
 </head>
 
 <body>
@@ -91,6 +94,8 @@ function menuMaker($category) {
     <?php include 'header.php'; ?>
 
     <main>
+
+        <?php include 'orderModal.php'; ?>
         <header class="menu-subheader">
             <button class="mobile menu-popout">
                 <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,51 +129,7 @@ function menuMaker($category) {
                 <?php echo menuMaker($category); ?>
             </div>
 
-            <div class="cart">
-                <h2>YOUR CART</h2>
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="cart-detail">
-                            <h3>ITEM NAME</h3>
-                            <p>$XX</p>
-                            <p>QTY: X</p>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="cart-detail">
-                            <h3>ITEM NAME</h3>
-                            <p>$XX</p>
-                            <p>QTY: X</p>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="cart-detail">
-                            <h3>ITEM NAME</h3>
-                            <p>$XX</p>
-                            <p>QTY: X</p>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="cart-detail">
-                            <h3>ITEM NAME</h3>
-                            <p>$XX</p>
-                            <p>QTY: X</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cart-total">
-                    <h2>TOTAL</h2>
-                    <h2>$XX</h2>
-                </div>
-                <button class="cart-checkout">Checkout</button>
-            </div>
+            <user-cart />
 
         </div>
         
@@ -178,7 +139,3 @@ function menuMaker($category) {
 </body>
 
 </html>
-
-<?php 
-
-?>

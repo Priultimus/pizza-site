@@ -2,21 +2,57 @@
 if (!(headers_sent())) {
     session_start();
 }
+
+if (!(isset($_SESSION['orderState']))) {
+    echo "<script>orderState = false;</script>";
+} else {
+    $orderState = $_SESSION['orderState'];
+    echo "<script>orderState = $orderState;</script>";
+}
+
+if (!isset($_SESSION['tempID'])) {
+    if (!isset($_SESSION['loginID'])) {
+        
+        require_once('../database/database.php');
+        $db = db_connect();
+        $stmt = $db->prepare("INSERT INTO tempLogins (tempID) VALUES (NULL)");
+        $stmt->execute();
+        $tempID = $stmt->insert_id;
+        $stmt->close();
+        $_SESSION['tempID'] = $tempID;
+        echo "<script>console.log('new temp id $tempID');</script>";
+    }
+} else if (isset($_SESSION['tempID'])) {
+    $tempID = $_SESSION['tempID'];
+}
 $href = '#';
 $text = 'SIGN IN';
 $class = 'sign-in-link';
 $loggedIn = false;
 if (isset($_SESSION['loginID'])) {
+    $loginId = $_SESSION['loginID'];
     $href = '../server/logout.php';
     $name = htmlspecialchars($_SESSION['f_name']) . ' ' . htmlspecialchars($_SESSION['l_name']);
     $text = 'SIGNED IN AS: ' . $name;
     $class = 'signed-in-link';
     $loggedIn = true;
+    echo "<script>let loggedIn = true;</script>";
+} else {
+    echo "<script>let loggedIn = false;</script>";
 }
 ?>
 
+
 <link rel="stylesheet" type="text/css" href="../css/globals.css">
 <script src="../scripts/global.js" defer></script>
+<?php 
+  if (isset($_SESSION['tempID']) && isset($_SESSION['loginID'])) {
+    echo "<script>document.addEventListener('DOMContentLoaded', () => {handleLogin();});</script>";
+    $_SESSION['oldTempID'] = $_SESSION['tempID'];
+    unset($_SESSION['tempID']);
+}
+
+?>
 <header class="header">
     <script src="../scripts/signup.js" defer></script>
     <div id="wordmark" onclick="location.href='../pages/index.php'">
@@ -35,8 +71,6 @@ if (isset($_SESSION['loginID'])) {
             </svg>
         </div>
     </a>
-
-
     <div class="modal user-modal">
         <form class="sign-in modal-content modal-form visible" aria-modal="true" action="../server/login.php" method="POST">
             <button type="button" class="modal-close">

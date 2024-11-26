@@ -9,6 +9,29 @@ let signUpForm = document.querySelector(".sign-up.modal-form");
 let signInLink = document.querySelector(".account-prompt.sign-in");
 let signUpLink = document.querySelector(".account-prompt.sign-up");
 
+let mobileButton = document.querySelector(".mobile-burger");
+let mobileOptions = document.querySelector(".account-options");
+
+
+mobileButton.addEventListener("click", (e) => {
+    mobileOptions.classList.toggle("visible");
+});
+
+function handleLogin() {
+    fetch('../server/cart.php?saveCart=true')
+        .then((response) => response.json())
+        .then((resp) => {
+            console.log(resp);
+        });
+    if (orderState) {
+        fetch(`../server/order.php?saveOrder=${orderState}`)
+            .then((response) => response.json())
+            .then((resp) => {
+                console.log(resp);
+            });
+    }
+}
+
 function showModal(modal) {
     console.log("modal arriving");
     modal.classList.add("visible");
@@ -44,8 +67,16 @@ window.addEventListener("keydown", (e) => {
 });
 
 showModalButtons.forEach(button => button.addEventListener("click", (e) => {
+    showSignInForm();
     showModal(userModal)
 }));
+let mobileSignUp = document.getElementById("mobile-sign-up");
+if (mobileSignUp) {
+    mobileSignUp.addEventListener("click", (e) => {
+        showSignUpForm();
+        showModal(userModal);
+    });
+}
 closeModalButtons.forEach(button => button.addEventListener("click", hideModal));
 submitButtons.forEach(button => button.addEventListener("click", hideModal));
 signInLink.addEventListener("click", showSignInForm);
