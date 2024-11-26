@@ -226,8 +226,54 @@ main {
         gap: 2em;
     }
 
-    .menu-search {
+    .menu-subheader {
+        justify-content: space-between;
+
+    }
+
+    .menu-options {
+        display: none !important;
+    }
+
+    .mobile.menu-popout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        padding: 0.5em;
+        margin: 0 0.5em;
+    }
+
+    .mobile.menu-subheader {
         display: none;
+        flex-direction: column;
+        background-color: #545454;
+        padding-top: 0.5em;
+    }
+
+    .mobile.menu-subheader.visible {
+        display: flex;
+    }
+
+    .mobile.menu-subheader .menu-subheader-option {
+        border: 2px #F15050 solid;
+        font-weight: 500;
+        width: 100%;
+    }
+
+    .mobile.menu-subheader .menu-subheader-option:hover {
+        background-color: #F15050;
+    }
+
+}
+
+@media only screen and (max-width: 754px) {
+    .menu-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-card-button {
+        padding: 0.3em 2em;
     }
 }
 

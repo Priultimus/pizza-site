@@ -1,6 +1,12 @@
 let menuItems = document.querySelectorAll(".menu-card-wrapper");
 let categoryButtons = document.querySelectorAll(".menu-subheader-option");
 let menuSearchTip = document.querySelector(".menu-search-tip");
+let menuBurgerButton = document.querySelector(".mobile.menu-popout");
+
+menuBurgerButton.addEventListener("click", (e) => {
+    let menu = document.querySelector(".mobile.menu-subheader");
+    menu.classList.toggle("visible");
+});
 
 function errorReview(itemId, name, review, rating, message = 'Something went wrong while submitting your review. Please try again') {
     let wrapper = document.getElementById(itemId);

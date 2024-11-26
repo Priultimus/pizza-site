@@ -92,6 +92,13 @@ function menuMaker($category) {
 
     <main>
         <header class="menu-subheader">
+            <button class="mobile menu-popout">
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="3" width="30" height="3" fill="currentColor" />
+                    <rect x="1" y="23" width="30" height="3" fill="currentColor" />
+                    <rect x="1" y="13" width="30" height="3" fill="currentColor" />
+                </svg>
+            </button>
             <div class="menu-options">
                 <button data-category="all" class="menu-subheader-option <?php if ($category == 'all') {echo 'selected';} ?>">ALL</button>
                 <?php echo getCategories($category) ?>
@@ -105,6 +112,9 @@ function menuMaker($category) {
                 </button>
             </form>
         </header>
+        <div class="mobile menu-subheader">
+            <?php echo getCategories($category) ?>
+        </div>
         <div class='menu-title'>
           <h1><?php echo $title_text ?></h1>
           <a class="menu-search-tip <?php echo $visible ?>">Clear your search</a>
