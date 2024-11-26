@@ -1,8 +1,3 @@
-<?php 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && array_key_exists("order-type", $_GET)) {
-    header("Location: ../pages/menu.php");
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
