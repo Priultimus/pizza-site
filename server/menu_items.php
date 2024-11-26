@@ -129,19 +129,9 @@ function returnWholeReviewElement($itemId) {
         
 }
 
-function fetchMenuItemById($itemId) {
-    $query = "SELECT * FROM menu_items WHERE itemID = $itemId";
-    global $db;
-    $result = mysqli_query($db, $query);
-    $row = mysqli_fetch_assoc($result);
-    $name = $row['name'];
-    $desc = $row['description'];
-    $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $itemId";
-    $ratingResult = mysqli_query($db, $ratingQuery);
-    $ratingRow = mysqli_fetch_assoc($ratingResult);
-    $rating = calcRating($ratingRow['rating']);
-    $image = $row['image'];
-    return "<div class='menu-card'>
+function menuItemMaker($itemId, $name, $desc, $category, $rating, $image) {
+    $rating = calcRating($rating);
+    return "<div data-category='$category' class='menu-card'>
               <div class='menu-card-panel'>
                 <img class='menu-card-image' src='../$image' alt='$desc' />
                 <div class='menu-card-details'>
@@ -159,6 +149,21 @@ function fetchMenuItemById($itemId) {
                 <span class='button-text'>Add to Cart</span>
               </button>
             </div>";
+}
+
+function fetchMenuItemById($itemId) {
+    $query = "SELECT * FROM menu_items WHERE itemID = $itemId";
+    global $db;
+    $result = mysqli_query($db, $query);
+    $row = mysqli_fetch_assoc($result);
+    $name = $row['name'];
+    $desc = $row['description'];
+    $category = $row['category'];
+    $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $itemId";
+    $ratingResult = mysqli_query($db, $ratingQuery);
+    $rating = mysqli_fetch_assoc($ratingResult)['rating'];
+    $image = $row['image'];
+    return menuItemMaker($itemId, $name, $desc, $category, $rating, $image);
 }
 
 function fetchMenuItemsByCategory($category) {
@@ -181,25 +186,7 @@ function fetchMenuItemsByCategory($category) {
         $rating = calcRating($ratingRow['rating']);
         $image = $row['image'];
 
-        $menuItems[$id] = "
-            <div data-category='$itemCategory' class='menu-card'>
-              <div class='menu-card-panel'>
-                <img class='menu-card-image' src='../$image' alt='$desc' />
-                <div class='menu-card-details'>
-                  <h3>$name</h3>
-                  <p>$desc</p>
-                </div>
-                <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
-              </div>
-              <button class='menu-card-button'>
-                <svg class='button-cart-icon' width='25' height='23' viewBox='0 0 25 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path d='M10.1677 16.605C8.63475 16.605 7.3877 17.852 7.3877 19.3849C7.3877 20.9182 8.63475 22.1656 10.1677 22.1656C11.7005 22.1656 12.9477 20.9182 12.9477 19.3849C12.9477 17.852 11.7005 16.605 10.1677 16.605ZM10.1677 20.3693C9.62519 20.3693 9.18392 19.9276 9.18392 19.3848C9.18392 18.8424 9.62519 18.4011 10.1677 18.4011C10.7101 18.4011 11.1515 18.8424 11.1515 19.3848C11.1515 19.9276 10.7101 20.3693 10.1677 20.3693Z' fill='currentColor' />
-                  <path d='M19.44 16.605C17.9071 16.605 16.6599 17.852 16.6599 19.3849C16.6599 20.9182 17.907 22.1656 19.44 22.1656C20.973 22.1656 22.2203 20.9182 22.2203 19.3849C22.2203 17.852 20.973 16.605 19.44 16.605ZM19.44 20.3693C18.8975 20.3693 18.4561 19.9276 18.4561 19.3848C18.4561 18.8424 18.8975 18.4011 19.44 18.4011C19.9826 18.4011 20.4241 18.8424 20.4241 19.3848C20.4241 19.9276 19.9827 20.3693 19.44 20.3693Z' fill='currentColor' />
-                  <path d='M24.8123 3.9117C24.6423 3.69172 24.3799 3.56287 24.1019 3.56287H6.20009L5.44831 0.672028C5.34533 0.276259 4.988 0 4.57906 0H0.898112C0.402115 0 0 0.402115 0 0.898113C0 1.39411 0.402115 1.79623 0.898112 1.79623H3.88464L4.63031 4.66372C4.63402 4.67977 4.63821 4.69569 4.64276 4.71138L7.41578 15.3745C7.51876 15.7703 7.87609 16.0465 8.28503 16.0465H21.3225C21.7314 16.0465 22.0888 15.7703 22.1918 15.3745L24.9711 4.68695C25.0411 4.41812 24.9824 4.1318 24.8123 3.9117ZM20.6281 14.2505H8.97945L6.66723 5.35922H22.9404L20.6281 14.2505Z' fill='currentColor' />
-                </svg>
-                <span class='button-text'>Add to Cart</span>
-              </button>
-            </div>";
+        $menuItems[$id] = menuItemMaker($id, $name, $desc, $itemCategory, $rating, $image);
     }
     return $menuItems;
 }
@@ -223,26 +210,40 @@ function fetchMenuItemsBySearch($searchQuery, $category = null) {
         $ratingRow = mysqli_fetch_assoc($ratingResult);
         $rating = calcRating($ratingRow['rating']);
         $image = $row['image'];
-
-        $menuItems[$id] = "
-            <div data-category='$itemCategory' class='menu-card'>
-              <div class='menu-card-panel'>
-                <img class='menu-card-image' src='../$image' alt='$desc' />
-                <div class='menu-card-details'>
-                  <h3>$name</h3>
-                  <p>$desc</p>
-                </div>
-                <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
-              </div>
-              <button class='menu-card-button'>
-                <svg class='button-cart-icon' width='25' height='23' viewBox='0 0 25 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path d='M10.1677 16.605C8.63475 16.605 7.3877 17.852 7.3877 19.3849C7.3877 20.9182 8.63475 22.1656 10.1677 22.1656C11.7005 22.1656 12.9477 20.9182 12.9477 19.3849C12.9477 17.852 11.7005 16.605 10.1677 16.605ZM10.1677 20.3693C9.62519 20.3693 9.18392 19.9276 9.18392 19.3848C9.18392 18.8424 9.62519 18.4011 10.1677 18.4011C10.7101 18.4011 11.1515 18.8424 11.1515 19.3848C11.1515 19.9276 10.7101 20.3693 10.1677 20.3693Z' fill='currentColor' />
-                  <path d='M19.44 16.605C17.9071 16.605 16.6599 17.852 16.6599 19.3849C16.6599 20.9182 17.907 22.1656 19.44 22.1656C20.973 22.1656 22.2203 20.9182 22.2203 19.3849C22.2203 17.852 20.973 16.605 19.44 16.605ZM19.44 20.3693C18.8975 20.3693 18.4561 19.9276 18.4561 19.3848C18.4561 18.8424 18.8975 18.4011 19.44 18.4011C19.9826 18.4011 20.4241 18.8424 20.4241 19.3848C20.4241 19.9276 19.9827 20.3693 19.44 20.3693Z' fill='currentColor' />
-                  <path d='M24.8123 3.9117C24.6423 3.69172 24.3799 3.56287 24.1019 3.56287H6.20009L5.44831 0.672028C5.34533 0.276259 4.988 0 4.57906 0H0.898112C0.402115 0 0 0.402115 0 0.898113C0 1.39411 0.402115 1.79623 0.898112 1.79623H3.88464L4.63031 4.66372C4.63402 4.67977 4.63821 4.69569 4.64276 4.71138L7.41578 15.3745C7.51876 15.7703 7.87609 16.0465 8.28503 16.0465H21.3225C21.7314 16.0465 22.0888 15.7703 22.1918 15.3745L24.9711 4.68695C25.0411 4.41812 24.9824 4.1318 24.8123 3.9117ZM20.6281 14.2505H8.97945L6.66723 5.35922H22.9404L20.6281 14.2505Z' fill='currentColor' />
-                </svg>
-                <span class='button-text'>Add to Cart</span>
-              </button>
-            </div>";
+        $item = menuItemMaker($id, $name, $desc, $itemCategory, $rating, $image);
+        $menuItems[$id] = $item;
     }
     return $menuItems;
 }
+
+function fetchHighlights($limit = 3) {
+    $query = "SELECT m.itemID as itemID, m.name as name, m.description as description, m.category as category, m.image as image, ROUND(AVG(r.rating), 1) as rating FROM menu_items as m LEFT JOIN reviews as r on m.itemID = r.itemID GROUP BY m.itemID, m.name, m.description, m.category, m.image ORDER BY rating DESC LIMIT $limit";
+    global $db;
+    $result = mysqli_query($db, $query);
+    $menuItems = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id = $row['itemID'];
+        $name = $row['name'];
+        $desc = $row['description'];
+        $itemCategory = $row['category'];
+        $ratingQuery = "SELECT ROUND(AVG(rating), 1) AS rating FROM reviews WHERE itemID = $id";
+        $ratingResult = mysqli_query($db, $ratingQuery);
+        $ratingRow = mysqli_fetch_assoc($ratingResult);
+        $rating = calcRating($ratingRow['rating']);
+        $image = $row['image'];
+
+        $itemString = "<div class='menu-card'>
+          <div class='menu-card-panel'>
+            <img src='../$image' alt='$desc' />
+            <div class='menu-card-details'>
+              <h3>$name</h3>
+              <p>$desc</p>
+              <img class='menu-card-stars' src='../images/$rating-stars.svg' alt='Rating: $rating' />
+            </div>
+          </div>
+          <button onclick=\"location.href='../pages/menu.php?item_id=$id'\" class='menu-highlight-card-button'>Find Out More</button></div>";
+
+        $menuItems[$id] = $itemString;
+    }
+    return $menuItems;
+  }
