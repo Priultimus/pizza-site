@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['l_name'] = $last_name;
 
         // Redirect to the landing page...
-        header("Location: ../index.php");
+        echo "<script>history.go(-1);</script>";
+        // header("Location: ../index.php");
         exit();
     } else {
         die("Error creating account: " . $db->error);

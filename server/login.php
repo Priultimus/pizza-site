@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['loginID'] = $user['loginID']; // Store loginID in session
             $_SESSION['f_name'] = $user['f_name'];  // Store first name
             $_SESSION['l_name'] = $user['l_name'];  // Store last name
-            header("Location: ../index.php"); // Redirect to landing page
+            echo "<script>history.go(-1);</script>";
+           // header("Location: ../index.php"); // Redirect to landing page
             exit;
         } else {
             echo "Invalid password";
