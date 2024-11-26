@@ -2,15 +2,28 @@ let menuItems = document.querySelectorAll(".menu-card-wrapper");
 let categoryButtons = document.querySelectorAll(".menu-subheader-option");
 let menuSearchTip = document.querySelector(".menu-search-tip");
 
-menuSearchTip.addEventListener("click", (e) => {
-    let url = new URL(window.location.href);
-    url.searchParams.delete("search");
-    if (url.searchParams.has("category") && url.searchParams.get("category") === "all") {
-        url.searchParams.delete("category");
-    }
-    window.history.pushState({}, "", url);
-    window.location.reload();
-});
+function errorReview(itemId, name, review, rating, message = 'Something went wrong while submitting your review. Please try again') {
+    let wrapper = document.getElementById(itemId);
+    let nameInput = document.getElementById(`your-name-${itemId}`);
+    let starzero = document.getElementById(`star0-${itemId}`);
+    let stars = document.getElementById(`star${rating}-${itemId}`);
+    let reviewInput = document.getElementById(`your-review-${itemId}`);
+    let err = document.createElement('p');
+    let reviewCard = reviewInput.parentElement;
+
+    toggleExpanded(wrapper, force = true);
+    nameInput.value = name;
+    reviewInput.value = review;
+    stars.checked = true;
+    starzero.checked = false;
+    err.id = reviewInput.id + '-error';
+    err.className = 'error-message';
+    err.style.color = 'red';
+    err.textContent = message;
+    reviewCard.appendChild(err);
+    nameInput.style.border = '2px solid red';
+    reviewInput.style.border = '2px solid red';
+}
 
 menuItems.forEach(item => {
     item.addEventListener("click", (e) => { safeToClick(e.target) ? toggleExpanded(item) : null });
@@ -52,7 +65,9 @@ function updateCategory(category) {
                 url.searchParams.delete("category");
             }
             window.history.pushState({}, "", url);
+
             window.location.reload();
+
         } else {
             button.classList.remove("selected");
         }
@@ -76,6 +91,17 @@ categoryButtons.forEach(button => {
         updateCategory(category);
     })
 })
+
+
+menuSearchTip.addEventListener("click", (e) => {
+    let url = new URL(window.location.href);
+    url.searchParams.delete("search");
+    if (url.searchParams.has("category") && url.searchParams.get("category") === "all") {
+        url.searchParams.delete("category");
+    }
+    window.history.pushState({}, "", url);
+    window.location.reload();
+});
 
 window.addEventListener("keydown", (e) => {
     let url = new URL(window.location.href);

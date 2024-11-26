@@ -1,5 +1,4 @@
 <?php require_once('../server/menu_items.php');
-
 $search = null;
 $category = 'all';
 $title_text = "OUR MENU";
@@ -13,6 +12,47 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
     if (array_key_exists("category", $_GET)) {
         $category = $_GET["category"];
+    }
+
+    if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
+        $item_id = $_GET["item_id"];
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                let elem = document.getElementById('$item_id');
+                toggleExpanded(elem, force=true);
+                elem.scrollIntoView();
+            });
+            </script>";
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (array_key_exists("your-name", $_POST)) {
+        $itemId = $_POST['item-id'];
+        $name = $_POST['your-name'];
+        $rating = $_POST['rating'];
+        $review = $_POST['your-review'];
+        $datetime = date("Y-m-d H:i:s");
+        $stmt = $db->prepare("INSERT INTO reviews (itemID, name, rating, review_text, review_datetime) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("isiss", $itemId, $name, $rating, $review, $datetime);
+        if ($stmt->execute()) {
+            $stmt->close();
+            $reviews = returnWholeReviewElement($itemId);
+            $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
+            $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
+            echo "<script>
+              let wrapper = document.getElementById('$itemId');
+              toggleExpanded(wrapper, force=true);
+            </script>";
+        } else {
+            $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $safeReview = htmlspecialchars($review, ENT_QUOTES, 'UTF-8');
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', () => {
+              errorReview('$itemId', '$safeName', '$safeReview', '$rating');
+            });
+            </script>";
+        }
     }
 }
 
@@ -130,35 +170,5 @@ function menuMaker($category) {
 </html>
 
 <?php 
-if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
-    $item_id = $_GET["item_id"];
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let elem = document.getElementById('$item_id');
-                toggleExpanded(elem, force=true);
-                elem.scrollIntoView();
-            });
-            </script>";
-}
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && array_key_exists("your-name", $_POST)) {
-    $itemId = $_POST['item-id'];
-    $name = $_POST['your-name'];
-    $rating = $_POST['rating'];
-    $review = $_POST['your-review'];
-    $datetime = date("Y-m-d H:i:s");
-    $query = "INSERT INTO reviews (itemID, name, rating, review_text, review_datetime) VALUES ('$itemId', '$name', '$rating', '$review', '$datetime')";
-    $result = mysqli_query($db, $query);
-    $reviews = returnWholeReviewElement($itemId);
-    $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
-    $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
-    echo "<script>
-        alert('test');
-        let wrapper = document.getElementById('$itemId');
-        let child = wrapper.querySelector('.menu-card-reviews');
-        child.innerHTML = '$test';
-        location.href='../pages/menu.php?item_id=$itemId';
-        wrapper.scrollIntoView();
-    </script>";
-    
-}
+?>
