@@ -15,7 +15,7 @@
         <div class="modal order-modal">
             <!-- Order Form -->
             <form method='get' onsubmit="handleSubmit(this);" class="modal-content start-order">
-                <button class="modal-close">
+                <button type="button" class="modal-close">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.00012207" y="17.6777" width="25" height="2.5" rx="1"
                             transform="rotate(-45 0.00012207 17.6777)" fill="currentColor" />
@@ -50,42 +50,8 @@
         <div class="lower">
             <h2 class="lower-title">Here's a taste of what's in store...</h2>
             <div class="menu-highlight-cards">
-                <!-- Menu Card 1 -->
-                <div class="menu-card">
-                    <div class="menu-card-panel">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="menu-card-details">
-                            <h3>ITEM NAME</h3>
-                            <p>ITEM DESCRIPTION</p>
-                            <p>ITEM RATING AS STARS</p>
-                        </div>
-                    </div>
-                    <button onclick="location.href='../pages/menu.php?item_id=1'" class="menu-highlight-card-button">Find Out More</button>
-                </div>
-                <!-- Menu Card 2 -->
-                <div class="menu-card">
-                    <div class="menu-card-panel">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="menu-card-details">
-                            <h3>ITEM NAME</h3>
-                            <p>ITEM DESCRIPTION</p>
-                            <p>ITEM RATING AS STARS</p>
-                        </div>
-                    </div>
-                    <button class="menu-highlight-card-button">Find Out More</button>
-                </div>
-                <!-- Menu Card 3 -->
-                <div class="menu-card">
-                    <div class="menu-card-panel">
-                        <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                        <div class="menu-card-details">
-                            <h3>ITEM NAME</h3>
-                            <p>ITEM DESCRIPTION</p>
-                            <p>ITEM RATING AS STARS</p>
-                        </div>
-                    </div>
-                    <button class="menu-highlight-card-button">Find Out More</button>
-                </div>
+                <?php require_once('../server/menu_items.php'); 
+                foreach(fetchHighlights() as $itemId => $item) { echo $item; }; ?>
             </div>
 
             <div class="go-to-menu">
