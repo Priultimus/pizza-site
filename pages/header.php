@@ -17,7 +17,7 @@ if (isset($_SESSION['loginID'])) {
 <script src="../scripts/global.js" defer></script>
 <header class="header">
     <script src="../scripts/signup.js" defer></script>
-    <div id="wordmark">
+    <div id="wordmark" onclick="location.href='../pages/index.php'">
         <img src="../images/logo.svg" alt="Pizza Shop Logo">
         <h2>PIZZA SHOP</h2>
     </div>
