@@ -17,14 +17,22 @@ mobileButton.addEventListener("click", (e) => {
     mobileOptions.classList.toggle("visible");
 });
 
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function handleLogin() {
+    let hasOrder = getCookie('order');
     fetch('../server/cart.php?saveCart=true')
         .then((response) => response.json())
         .then((resp) => {
             console.log(resp);
         });
-    if (orderState) {
-        fetch(`../server/order.php?saveOrder=${orderState}`)
+    if (hasOrder) {
+        fetch(`../server/order.php?saveOrder=${hasOrder}`)
             .then((response) => response.json())
             .then((resp) => {
                 console.log(resp);

@@ -7,13 +7,60 @@
     <title>Checkout | Pizza Shop</title>
     <link rel="stylesheet" type="text/css" href="../css/checkout.css">
     <script src="../scripts/checkout.js" defer></script>
+    <script src="../scripts/cart.js" defer></script>
 </head>
 
 <body>
 
-    <?php include 'header.php'; ?>
+    <?php include 'header.php'; ?> 
 
-    <main class="order">
+  <?php
+   if (!isset($_COOKIE['order'])) {
+    Header("Location: ../pages/menu.php");
+    }
+    require_once("../database/database.php");
+    $db = db_connect();
+    $orderID = $_COOKIE['order'];
+    $orderInfo = array('order' => [], 'items' => []);
+    $stmt = $db->prepare("SELECT delivery, total_price FROM orders WHERE orderID = ?");
+    $stmt->bind_param("i", $orderID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $order = $result->fetch_assoc();
+    $orderType = $order['delivery'] ? 'DELIVERY' : 'TAKEOUT';
+    $price = $order['total_price'];
+    $stmt->close();
+
+  function checkoutMaker() {
+    $orderID = $_COOKIE['order'];
+    global $db;
+    $stmt = $db->prepare("SELECT menuItemID as itemID, qty FROM order_line WHERE orderID = ?");
+    $stmt->bind_param("i", $orderID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC); // Fetch all rows
+    $stmt->close();
+
+    foreach($rows as $resultItem) {
+        $itemID = $resultItem['itemID'];
+        $qty = $resultItem['qty'];
+        
+        $stmt = $db->prepare("SELECT name, price, image FROM menu_items WHERE itemID = ?");
+        $stmt->bind_param("i", $itemID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $item = $result->fetch_assoc();
+        $stmt->close();
+        
+        $name = $item['name'];
+        $price = $item['price'];
+        $img = $item['image'];
+        
+        echo "<cart-item checkout='true' id='order-item-$itemID' name='$name' price='$price' qty='$qty' img='$img'></cart-item>";
+    }
+}
+?>
+    <main class="checkout">
         <form class="form-wrapper" action = "../server/checkout_page.php" method ="POST" onsubmit="return validate()">
             <h1>PAYMENT TITLE</h1>
             <div class="payment form">
@@ -61,71 +108,29 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="order-button" value="PLACE ORDER">
+            <input type="hidden" name="orderID" value="<?php echo $orderID ?>">
+            <input type="hidden" name="orderType" value="<?php echo $orderType ?>">
+            <input type="hidden" name="price" value="<?php echo $price ?>">
+            <button type="submit" class="order-button">PLACE ORDER</button>
         </form>
 
-        <div class="order-info">
+        <div class="order">
             <div class="order-items">
-
-                <div class="order-item">
-                    <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                    <div class="order-item-info">
-                        <h3>ITEM NAME</h3>
-                        <p>$XX</p>
-                        <p>QTY: X</p>
-                    </div>
-                </div>
-
-                <div class="order-item">
-                    <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                    <div class="order-item-info">
-                        <h3>ITEM NAME</h3>
-                        <p>$XX</p>
-                        <p>QTY: X</p>
-                    </div>
-                </div>
-
-                <div class="order-item">
-                    <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                    <div class="order-item-info">
-                        <h3>ITEM NAME</h3>
-                        <p>$XX</p>
-                        <p>QTY: X</p>
-                    </div>
-                </div>
-
-                <div class="order-item">
-                    <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                    <div class="order-item-info">
-                        <h3>ITEM NAME</h3>
-                        <p>$XX</p>
-                        <p>QTY: X</p>
-                    </div>
-                </div>
-
-                <div class="order-item">
-                    <img src="../images/placeholder_image.png" alt="ITEM ALT" />
-                    <div class="order-item-info">
-                        <h3>ITEM NAME</h3>
-                        <p>$XX</p>
-                        <p>QTY: X</p>
-                    </div>
-                </div>
-
+                <?php echo checkoutMaker(); ?>
             </div>
-            <div class="order-details">
-                <h2 class="order-details-title">ORDER DETAILS</h2>
-                <div class="order-details-line">
+            <div class="order-summary">
+                <h2 class="order-summary-title">ORDER DETAILS</h2>
+                <div class="order-summary-line">
                     <h3>TYPE</h3>
-                    <p>DELIVERY</p>
+                    <p><?php echo $orderType ?></p>
                 </div>
-                <div class="order-details-line">
+                <div class="order-summary-line">
                     <h3>ETA</h3>
-                    <p>XX:XX</p>
+                    <p><?php echo date('H:i', strtotime('+10 minutes'));?></p>
                 </div>
-                <div class="order-details-line total">
+                <div class="order-summary-line order-total">
                     <h2>TOTAL</h2>
-                    <h2>$XX</h2>
+                    <h2>$<?php echo $price ?></h2>
                 </div>
             </div>
         </div>

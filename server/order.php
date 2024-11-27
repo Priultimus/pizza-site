@@ -28,22 +28,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt = $db->prepare("SELECT menuItemID, qty FROM order_line WHERE orderID = ?");
         $stmt->bind_param("i", $orderID);
         $stmt->execute();
-        $items = $stmt->get_result();
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         $total = 0;
-        while ($item = $items->fetch_assoc()) {
-            $stmt = $db->prepare("SELECT price FROM menu_items WHERE menuItemID = ?");
+        foreach($rows as $item) {
+            $stmt = $db->prepare("SELECT price FROM menu_items WHERE itemID = ?");
             $stmt->bind_param("i", $item['menuItemID']);
             $stmt->execute();
             $price = $stmt->get_result()->fetch_assoc();
-            $total += $price['price'] * $item['qty'];
+            $total += (int)$price['price'] * (int)$item['qty'];
         }
-        $stmt = $db->prepare("UPDATE orders SET completed = 1, price = ? WHERE orderID = ?");
-        $stmt->bind_param("ii", $orderID, $total);
+        
+        $stmt = $db->prepare("UPDATE orders SET completed = 1, total_price = ? WHERE orderID = ?");
+        $stmt->bind_param("ii", $total, $orderID);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $order = $result->fetch_assoc();
-        echo json_encode($order);
+        $success = $stmt->affected_rows > 0;
+        echo json_encode(array("success" => $success));
         exit();
 
     } else if (array_key_exists('saveOrder', $_GET)) {
@@ -57,9 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt = $db->prepare("UPDATE orders SET tempID = null, loginID = ? WHERE orderID = ?");
         $stmt->bind_param("ii", $loginID, $orderID);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $order = $result->fetch_assoc();
-        echo json_encode($order);
+        $success = $stmt->affected_rows > 0;
+        echo json_encode(array("success" => $success));
         exit();
     } else {
         $orders = array("orders" => []);
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
         while ($data = $result->fetch_assoc()) {
-            $orders['orders'][] = $data;
+            $orders['orders'] = $data;
         }
         echo json_encode($orders);
         exit();
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     $stmt->execute();
     $orderID = $stmt->insert_id;
-    $_SESSION['orderState'] = $orderID;
+    setcookie('order', $orderID, time() + (10 * 365 * 24 * 60 * 60), '/', httponly:false);
     if (array_key_exists('loginID', $_SESSION)) {
         $loginID = $_SESSION['loginID'];
         $stmt = $db->prepare("SELECT cartItems FROM cart WHERE loginID = ?");
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt->execute();
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
-        if (array_key_exists('cartItems', $data)) {
+        if (!empty($data) && array_key_exists('cartItems', $data)) {
             header("Location: ../server/cart.php?checkout=$orderID&user=true");
             exit();
         }
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Insert the order into the database
         $stmt->execute();
         $orderID = $stmt->insert_id;
-        $_SESSION['orderState'] = $orderID;
+        $setcookie('order', $orderID, time() + (10 * 365 * 24 * 60 * 60), '/', httponly:false);
         echo json_encode(["success" => "order started", "id" => $orderID]);
         exit();
         

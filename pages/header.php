@@ -3,13 +3,6 @@ if (!(headers_sent())) {
     session_start();
 }
 
-if (!(isset($_SESSION['orderState']))) {
-    echo "<script>orderState = false;</script>";
-} else {
-    $orderState = $_SESSION['orderState'];
-    echo "<script>orderState = $orderState;</script>";
-}
-
 if (!isset($_SESSION['tempID'])) {
     if (!isset($_SESSION['loginID'])) {
         

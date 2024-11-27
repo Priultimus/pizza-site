@@ -32,8 +32,6 @@ autofill.addEventListener('retrieve', (event) => {
     console.log(info)
 })
 
-let orderState = null;
-
 function pushOrder(orderData) {
     let order = { order: orderData }
     fetch("../server/order.php", {
@@ -98,8 +96,19 @@ function handleSubmit(form) {
     return true;
 }
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function startOrder() {
-    showModal(orderModal);
+    let hasOrder = getCookie('order');
+    if (!hasOrder) {
+        showModal(orderModal);
+    } else {
+        window.location.href = "../pages/menu.php";
+    }
 }
 
 orderTypeButton.addEventListener("click", () => {

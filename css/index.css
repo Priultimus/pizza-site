@@ -2,6 +2,7 @@ main {
     margin-top: 1.5em;
 }
 
+
 main h1 {
     font-size: 3.5em;
     font-weight: 900;
@@ -29,8 +30,6 @@ select {
     appearance: none;
     /* remove default arrow */
 }
-
-
 
 .upper {
     display: grid;

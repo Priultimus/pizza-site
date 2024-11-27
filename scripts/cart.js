@@ -1,6 +1,12 @@
 
 let checkoutOrderItems = [];
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function handleCheckoutButton() {
 
     if (!(loggedIn)) {
@@ -8,23 +14,29 @@ function handleCheckoutButton() {
         return;
     }
 
-    if (!(orderState)) {
+    let hasOrder = getCookie("order");
+    if (!hasOrder) {
         showModal(orderModal);
         return;
     }
 
-    fetch(`../server/cart.php?checkout=${orderState}`)
+    fetch(`../server/cart.php?checkout=${hasOrder}`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
+            } else {
+                response.json();
             }
-            return response.json();
         })
-        .then((resp) => {
-            checkoutCartItems = resp['order_items'];
-            console.log(resp);
-        });
+        .then((data) => {
+            console.log(data);
+        })
 
+    fetch(`../server/order.php?completeOrder=${hasOrder}`)
+        .then((response) => response.ok ? response.json() : console.log(response))
+        .then((data) => console.log(data));
+
+    window.location.href = "../pages/checkout.php";
 }
 
 class Cart extends HTMLElement {
@@ -73,7 +85,8 @@ class Cart extends HTMLElement {
 
         if (name == "total") {
             // Update the total price of the cart.
-            document.querySelector("#cart-total-amount").textContent = "$" + newValue;
+            let safeTotal = parseFloat(newValue).toFixed(2);
+            document.querySelector("#cart-total-amount").textContent = "$" + safeTotal;
         }
 
         if (name == "visible") {
@@ -166,7 +179,7 @@ class Cart extends HTMLElement {
         let total = 0;
         let items = JSON.parse(this.getAttribute('items'));
         items.forEach(item => {
-            total += parseFloat(item.price) * parseFloat(item.qty);
+            total += parseFloat(item.price).toFixed(2) * parseFloat(item.qty).toFixed(2);
         });
         this.setAttribute("total", total);
     }
@@ -179,38 +192,50 @@ class CartItem extends HTMLElement {
 
     constructor() {
         super();
+        this.cartType = this.getAttribute("checkout") ? "order" : "cart";
+
     }
 
     connectedCallback() {
-        this.classList.add("cart-item");
+        this.cartType = this.getAttribute("checkout") ? "order" : "cart";
+        let cartType = this.cartType;
+        this.setAttribute("class", `${cartType}-item`);
+        this.classList.add(`${cartType}-item`);
         const detail = document.createElement("div");
-        detail.classList.add("cart-detail");
+        detail.classList.add(`${cartType}-detail`);
         let name = document.createElement("h3");
         name.textContent = this.getAttribute("name");
         let price = document.createElement("p");
         price.textContent = "$" + this.getAttribute("price");
         let qty = document.createElement("p");
-        qty.id = `cart-item-qty-${this.getAttribute("id")}`;
+        qty.id = `${cartType}-item-qty-${this.getAttribute("id")}`;
         qty.textContent = "QTY: " + this.getAttribute("qty");
-        let remove = document.createElement("button");
-        remove.textContent = "Remove";
-        remove.classList.add("cart-item-remove");
-        remove.addEventListener("click", (e) => { this.handleRemove() });
         detail.appendChild(name);
         detail.appendChild(price);
         detail.appendChild(qty);
-        detail.appendChild(remove);
+        if (cartType == "cart") {
+            let remove = document.createElement("button");
+            remove.textContent = "Remove";
+            remove.classList.add("cart-item-remove");
+            remove.addEventListener("click", (e) => { this.handleRemove() });
+            detail.appendChild(remove);
+        }
         let img = document.createElement("img");
         img.src = "../" + this.getAttribute("img");
+        img.alt = this.getAttribute("name");
         this.appendChild(img);
         this.appendChild(detail);
-        this.setAttribute("class", "cart-item");
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+        if (this.cartType != "cart") {
+            return;
+        }
+
         if (oldValue === newValue || !oldValue) {
             return;
         }
+
         if (name == "qty") {
             let id = this.getAttribute("id");
             this.querySelector(`#cart-item-qty-${id}`).textContent = "QTY: " + newValue;
@@ -225,6 +250,9 @@ class CartItem extends HTMLElement {
     }
 
     handleRemove() {
+        if (this.cartType != "cart") {
+            return;
+        }
         if (this.getAttribute("qty") <= 1) {
             this.remove();
         } else {
@@ -233,6 +261,9 @@ class CartItem extends HTMLElement {
         }
     }
     disconnectedCallback() {
+        if (this.cartType != "cart") {
+            return;
+        }
         let itemId = this.getAttribute("id").split("-")[1];
         let cart = document.querySelector("user-cart");
         let items = JSON.parse(cart.getAttribute("items"));

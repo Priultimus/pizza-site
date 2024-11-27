@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         if (array_key_exists('user', $_GET)) {
             $headerString = "Location: ../pages/checkout.php?orderid=$orderID";
-            Header($headerString);
+            Header('');
             exit();
         }
         echo json_encode(["success" => "cart cleared ", "order_line" => $cartItems]);
