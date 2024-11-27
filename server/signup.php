@@ -1,5 +1,7 @@
+<!-- Code Developed by Gabe -->
 <?php
 
+// Include the database connection file to establish a connection to the database.
 require_once('../database/database.php');
 $db = db_connect();
 
@@ -24,14 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if the email already exists...
     $stmt = $db->prepare("SELECT email FROM logins WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    $stmt->bind_param("s", $email);// Bind the email input to the query to prevent SQL injection.
+    $stmt->execute();// Execute the query.
+    $stmt->store_result();// Store the result to check if an account with that email exists.
 
+    // If an account with the given email already exists, display an error message and terminate the script.
     if ($stmt->num_rows > 0) {
         die("An account with this email already exists!");
     }
-    $stmt->close();
+    $stmt->close();// Close the statement.
 
     // Hash the password securely
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -47,18 +50,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['f_name'] = $first_name;
         $_SESSION['l_name'] = $last_name;
 
-        // Redirect to the landing page...
+        // Redirect to the landing page after successful registration
         echo "<script>history.go(-1);</script>";
-        // header("Location: ../index.php");
-        exit();
+        
+        exit();// Exit the script after redirection.
     } else {
+         // If the account creation fails, display an error message.
         die("Error creating account: " . $db->error);
     }
 
-    $stmt->close();
-    $db->close();
+    $stmt->close(); // Close the statement.
+    $db->close();   // Close the database connection.
 } else {
     // Redirect to signup form if the request method is not POST
     header("Location: ../index.php");
-    exit();
+    exit(); // Exit the script to prevent further code execution.
 }
