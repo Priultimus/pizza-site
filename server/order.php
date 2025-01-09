@@ -1,10 +1,12 @@
 <?php
+// Written by Libert
 
 session_start();
 require_once('../database/database.php');
 $db = db_connect();
 Header("Content-Type: application/json");
 
+// There are different tables for temporary users versus logged in users, so we have multiple statements here.
 if (isset($_SESSION['loginID'])) {
     $userID = $_SESSION['loginID'];
     $getStatement = "SELECT * FROM orders WHERE loginID = ?";
@@ -16,6 +18,7 @@ if (isset($_SESSION['loginID'])) {
     $getStatement = "SELECT * FROM orders WHERE tempID = ?";
     $deliveryPostStatement = "INSERT INTO orders (tempID, delivery, street, city, province, postal) VALUES (?, 1, ?, ?, ?, ?)";
     $takeoutPostStatement = "INSERT INTO orders (tempID) VALUES (?)";
+
 } else {
     Header("HTTP/1.1 401 Unauthorized");
     echo json_encode(["error" => "You must be logged in to access this page. "]);
@@ -23,6 +26,7 @@ if (isset($_SESSION['loginID'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    // If the user is attempting to complete an order (i.e they've already chosen their cart items and are checking out)
     if (array_key_exists('completeOrder', $_GET)) {
         $orderID = $_GET['completeOrder'];
         $stmt = $db->prepare("SELECT menuItemID, qty FROM order_line WHERE orderID = ?");
@@ -32,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         $total = 0;
+        /// Calculate the total price of the order
         foreach($rows as $item) {
             $stmt = $db->prepare("SELECT price FROM menu_items WHERE itemID = ?");
             $stmt->bind_param("i", $item['menuItemID']);
@@ -39,14 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $price = $stmt->get_result()->fetch_assoc();
             $total += (int)$price['price'] * (int)$item['qty'];
         }
-        
+
+        // Save the total price and mark as completed.
         $stmt = $db->prepare("UPDATE orders SET completed = 1, total_price = ? WHERE orderID = ?");
         $stmt->bind_param("ii", $total, $orderID);
         $stmt->execute();
         $success = $stmt->affected_rows > 0;
         echo json_encode(array("success" => $success));
         exit();
-
+ 
+    // Usually called when a user with a temporary session logs in, this switches their order to be saved under their user accoumt.
     } else if (array_key_exists('saveOrder', $_GET)) {
         $orderID = $_GET['saveOrder'];
         if (!isset($_SESSION['loginID']) && !isset($_SESSION['tempID'])) {
@@ -61,6 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $success = $stmt->affected_rows > 0;
         echo json_encode(array("success" => $success));
         exit();
+    
+    // If the user is just trying to get their orders
     } else {
         $orders = array("orders" => []);
         $stmt = $db->prepare($getStatement);
@@ -80,12 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit();
     }
 
+    // This is if the user is creating a new order, and handles that form.
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = file_get_contents('php://input');
     if(array_key_exists('order-type', $_POST)) {
     $orderType = $_POST['order-type']; 
     if ($orderType == 'delivery') {
-        $address = $_POST['address-data'];
+        $address = $_POST['address-data']; // Take the address data from the form that we sneakily stored in there
         $address = json_decode($address, true);
         $stmt = $db->prepare($deliveryPostStatement);
         $stmt->bind_param("issss", $userID, $address['street'], $address['city'], $address['province'], $address['postal_code']);
@@ -95,8 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     $stmt->execute();
     $orderID = $stmt->insert_id;
+    // Give the user an order cookie. We use cookies because they're the easiest thing to be accessed by both JS and PHP.
     setcookie('order', $orderID, time() + (10 * 365 * 24 * 60 * 60), '/', httponly:false);
     if (array_key_exists('loginID', $_SESSION)) {
+        // If the user is logged in, we want to check if they have a cart and send it to checkout.
         $loginID = $_SESSION['loginID'];
         $stmt = $db->prepare("SELECT cartItems FROM cart WHERE loginID = ?");
         $stmt->bind_param("i", $loginID);
@@ -108,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
     }
+    // Otherwise, just go back to the menu page. 
     Header("Location: ../pages/menu.php");
     exit();
 }

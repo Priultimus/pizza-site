@@ -1,8 +1,13 @@
 <?php require_once('../server/menu_items.php');
+// Wrriten by Libert
+// Set the search to null, and the caetgory to all by default.
 $search = null;
 $category = 'all';
+// We will change the title text if the user searches for something.
 $title_text = "OUR MENU";
 $visible = '';
+
+// We search using url parameters, so we need to check if they exist.
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     if (array_key_exists("search", $_GET)) {
         $search = $_GET["search"]; 
@@ -10,10 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         $title_text = "Showing results for: $search";
     }
 
+    // This allows the user to filter their search by category,
+    // by using the already existing category buttons as a filter.
     if (array_key_exists("category", $_GET)) {
         $category = $_GET["category"];
     }
 
+    // This runs if the user was sent here specifically to look at one item in the menu.
+    // It expands that menu item's details and scrolls it into view.
     if (array_key_exists("item_id", $_GET) && itemIdExists($_GET["item_id"])) {
         $item_id = $_GET["item_id"];
         echo "<script>
@@ -26,29 +35,42 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 
+// This handles a user submitting a review.
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (array_key_exists("your-name", $_POST)) {
+        // WE grab all the relevavnt information about the review here. 
         $itemId = $_POST['item-id'];
         $name = $_POST['your-name'];
         $rating = $_POST['rating'];
         $review = $_POST['your-review'];
+        // We also grab the current date and time.
         $datetime = date("Y-m-d H:i:s");
+
         $stmt = $db->prepare("INSERT INTO reviews (itemID, name, rating, review_text, review_datetime) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("isiss", $itemId, $name, $rating, $review, $datetime);
+
         if ($stmt->execute()) {
             $stmt->close();
             $reviews = returnWholeReviewElement($itemId);
+            // This makes sure no XSS is possible, by cleaning up the text in the review.
             $cleanReviews =  trim(preg_replace('/\s\s+/', ' ', $reviews));
-            $test = htmlspecialchars($cleanReviews, ENT_QUOTES, 'UTF-8');
+
+            // When we come back to the review page, we want to make sure the item
+            // they left a review on is still visible.
             echo "<script>
               document.addEventListener('DOMContentLoaded', () => {
               let wrapper = document.getElementById('$itemId');
               toggleExpanded(wrapper, force=true);
               });
             </script>";
+
         } else {
+            // Also santizing inputs.
             $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
             $safeReview = htmlspecialchars($review, ENT_QUOTES, 'UTF-8');
+    
+            // Something went wrong with submitting the review,
+            // so we want to show the user an error message.
             echo "<script>
             document.addEventListener('DOMContentLoaded', () => {
               errorReview('$itemId', '$safeName', '$safeReview', '$rating');
@@ -58,8 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
+// This function uses helper functions from menu_Items.php to create the menu items.
 function menuMaker($category) { 
-    global $search;
+    global $search; // We grab the previously set search variable, and use it to see if the user is trying to search something.
     if (isset($search)) {
         $menuItems = fetchMenuItemsBySearch($search, $category);
     } else {
@@ -106,7 +129,8 @@ function menuMaker($category) {
             </button>
             <div class="menu-options">
                 <button data-category="all" class="menu-subheader-option <?php if ($category == 'all') {echo 'selected';} ?>">ALL</button>
-                <?php echo getCategories($category) ?>
+                <?php // Categories are automatically found and generated here
+                echo getCategories($category) ?>
             </div>
             <form class="menu-search-wrapper" method="GET">
                 <input class="menu-search" type="text" id="search" name="search"
@@ -128,7 +152,7 @@ function menuMaker($category) {
             <div class="menu-cards">
                 <?php echo menuMaker($category); ?>
             </div>
-
+            <!-- Use custom JS WebComponent to handle cart. Implementation is in scripts/cart.js -->
             <user-cart />
 
         </div>

@@ -1,11 +1,11 @@
 <?php
-
+// Written by Libert
 session_start();
 require_once('../database/database.php');
 $db = db_connect();
-Header("Content-Type: application/json");
+Header("Content-Type: application/json"); // Only going to be responding in JSON format.
 
-// Ensure user is logged in
+// There are different tables for temporary users versus logged in users, so we have multiple statements here.
 if (isset($_SESSION['loginID'])) {
     $userID = $_SESSION['loginID'];
     $getStatement = "SELECT loginID, cartItems FROM cart WHERE loginID = ?";
@@ -25,7 +25,7 @@ if (isset($_SESSION['loginID'])) {
     exit();
 }
 
-// Check if the request method is GET 
+// Responding to cart retrival request.
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $cart = array("cart_items" => []);
     // Retrieve the cart info based on the session's loginID.
@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     $data = $result->fetch_assoc();
     $stmt->close();
+
     if (array_key_exists('checkout', $_GET) && !empty($data)) {
         // If the user is checking out, clear the cart.
         

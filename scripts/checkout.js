@@ -1,3 +1,5 @@
+// Written by Gabe & Libert
+
 //Initializing constants
 const checkbox = document.getElementById('billing-checkbox');
 const billingForm = document.querySelector(".billing.form");
@@ -29,7 +31,7 @@ function whenClicked() {
 //Function responsible for displaying error messages and highlighting fields
 function showError(input, message) {
     let errorMessage = document.getElementById(input.id + "-error");
-    if (errorMessage){
+    if (errorMessage) {
         errorMessage.textContent = message;
     } else {
         // Create an error message element
@@ -46,20 +48,20 @@ function showError(input, message) {
 }
 
 // Function to clear error message and reset the field's border style.
-function clearError(field){
+function clearError(field) {
     // Get the error message element related to the input field by appending '-error' to the field's ID.
     let errorMessage = document.getElementById(field.id + "-error");
-     // Check if the error message exists for the field.
-    if (errorMessage){
+    // Check if the error message exists for the field.
+    if (errorMessage) {
         // Remove the error message element from the DOM if it exists.
         field.parentNode.removeChild(errorMessage);
         // Reset border style
-        field.style.border = ''; 
+        field.style.border = '';
     }
 }
 
 // Function to handle the 'focus' event on an input field.
-function onFocused(field){
+function onFocused(field) {
     // Call the clearError function to remove any error message and reset the field's border style.
     clearError(field)
 }
@@ -68,7 +70,7 @@ function onFocused(field){
 function validateCreditCardField(field) {
     // Regex to check for a valid 16-digit credit card number.
     const ccRegex = /^[0-9]{16}$/;
-    
+
     // Test the field value with the regex and show error if invalid.
     if (!ccRegex.test(field.value.trim())) {
         showError(field, 'Please enter a valid 16-digit credit card number.');
@@ -177,18 +179,18 @@ function validatePostalField(field) {
 function validate() {
     let valid = true;
     // If none of the functions are valid, set valid to false...preventing submission
-    if (!(validateCreditCardField(cc) && validateExpirationDateField(exp) 
+    if (!(validateCreditCardField(cc) && validateExpirationDateField(exp)
         && validateCVVField(cvv))) {
         valid = false;
-    } 
+    }
     //if checkbox is not checked return validation result
     if (!checkbox.checked) {
         return valid
     }
     // If none of the functions are valid, set valid to false...preventing submission
-    if (!(validateNameField(nameField) && validateAddressField(address) 
-        && validateCityField(city) && validatePostalField(postal) 
-        && validateProvinceField(province))){
+    if (!(validateNameField(nameField) && validateAddressField(address)
+        && validateCityField(city) && validatePostalField(postal)
+        && validateProvinceField(province))) {
         valid = false;
     }
 

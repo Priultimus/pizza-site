@@ -22,6 +22,8 @@
             <h2 class="lower-title">Here's a taste of what's in store...</h2>
             <div class="menu-highlight-cards">
                 <?php require_once('../server/menu_items.php'); 
+
+                // This calls fetchHighlights, which generates the menu items for the landing page.
                 foreach(fetchHighlights() as $itemId => $item) { echo $item; }; ?>
             </div>
 
@@ -34,7 +36,6 @@
 
     <?php include 'footer.php'; ?>
 
-    <script src="../scripts/index.js" defer></script>
 </body>
 
 </html>

@@ -25,7 +25,6 @@
     max-height: 100%;
 }
 
-/* this is funny, I have no idea if this is the best way to do this  */
 .menu-card-wrapper.expanded>.menu-card>.menu-card-button {
     background-color: #2BB24D;
     color: white;
@@ -40,12 +39,14 @@
     flex-direction: column;
     gap: 1em;
     padding: 0 0.5em;
-    /* wanna be able to scroll the reviews instead of overwhelming the screen */
+    /* should be able to scroll the reviews instead of overwhelming the screen */
     max-height: 40vh;
     overflow-y: auto;
 }
 
-/* Custom scrollbar styles */
+/* The following creates a custom scrollbar for the inside of the element
+sets the background to black, sets the scrollbar itself to white
+and makes it darker on hover. */
 .reviews::-webkit-scrollbar {
     width: 8px;
 }
@@ -158,7 +159,8 @@
 
 }
 
-/* for every selected star, set all the following ones to be unselected */
+/* this looks for every selected star,
+and sets all the following ones to be unselected */
 
 .radio-star:checked+.star-label~.star-label * {
     fill: none;

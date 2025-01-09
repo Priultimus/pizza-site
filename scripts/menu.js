@@ -1,3 +1,5 @@
+// Written by Libert
+
 let menuItems = document.querySelectorAll(".menu-card-wrapper");
 let categoryButtons = document.querySelectorAll(".menu-subheader-option");
 let menuSearchTip = document.querySelector(".menu-search-tip");
@@ -8,6 +10,7 @@ menuBurgerButton.addEventListener("click", (e) => {
     menu.classList.toggle("visible");
 });
 
+// Add error message to review form
 function errorReview(itemId, name, review, rating, message = 'Something went wrong while submitting your review. Please try again') {
     let wrapper = document.getElementById(itemId);
     let nameInput = document.getElementById(`your-name-${itemId}`);
@@ -35,6 +38,7 @@ menuItems.forEach(item => {
     item.addEventListener("click", (e) => { safeToClick(e.target) ? toggleExpanded(item) : null });
 });
 
+// Expand the menu item when the user clicks on the review button.
 function toggleExpanded(item, force = false) {
     let was_expanded = item.classList.contains('expanded');
     menuItems.forEach((menuItem) => {
@@ -46,6 +50,7 @@ function toggleExpanded(item, force = false) {
 
 }
 
+// This function just checks to make sure the user was ACTUALLY clicking on the menu item, and not like, the add to cart button.
 function safeToClick(target) {
     let shouldApprove = true;
     if (!(target.classList.length === 0)) {
@@ -58,6 +63,8 @@ function safeToClick(target) {
     return shouldApprove;
 }
 
+
+// This function updates the category on the website and the URL.
 function updateCategory(category) {
     category = category.toLowerCase();
     console.log(`Update category called: ${category}`)
@@ -72,7 +79,7 @@ function updateCategory(category) {
             }
             window.history.pushState({}, "", url);
 
-            window.location.reload();
+            window.location.reload(); // I don't liek doing this but I can't find any other way to ensure the categories stay consistent.
 
         } else {
             button.classList.remove("selected");
@@ -91,6 +98,7 @@ function updateCategory(category) {
     });
 }
 
+// This function updates the search on the website and the URL.
 categoryButtons.forEach(button => {
     button.addEventListener("click", (e) => {
         let category = e.target.dataset.category;
@@ -98,7 +106,7 @@ categoryButtons.forEach(button => {
     })
 })
 
-
+// When the user wants to clear their search, this button can do that.
 menuSearchTip.addEventListener("click", (e) => {
     let url = new URL(window.location.href);
     url.searchParams.delete("search");
@@ -109,6 +117,7 @@ menuSearchTip.addEventListener("click", (e) => {
     window.location.reload();
 });
 
+// Also leave search if the user presses escape AND there's no modal open AND there's a search query.
 window.addEventListener("keydown", (e) => {
     let url = new URL(window.location.href);
     if (e.key === "Escape" && !(document.querySelector(".modal.visible")) && url.searchParams.has("search")) {

@@ -7,7 +7,6 @@
     padding: 1em;
     margin: 0;
     position: sticky;
-    /** NOTE: THIS IS CHEATING, AND I HAVE TO FIX IT LATER **/
     width: 375px;
     height: 770px;
     left: 1660px;

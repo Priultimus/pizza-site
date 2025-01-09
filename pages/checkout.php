@@ -1,3 +1,6 @@
+<?php 
+// Written by Libert
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,21 +19,29 @@
 
   <?php
    if (!isset($_COOKIE['order'])) {
+    # If the user doesn't have an order, there's nothing to check out! Redirect them to the menu.
     Header("Location: ../pages/menu.php");
     }
+
     require_once("../database/database.php");
     $db = db_connect();
+
+    # Grab the order ID from the cookie.
     $orderID = $_COOKIE['order'];
-    $orderInfo = array('order' => [], 'items' => []);
+
+    # Use the order ID found in the cookie to get the relevant order details.
     $stmt = $db->prepare("SELECT delivery, total_price FROM orders WHERE orderID = ?");
     $stmt->bind_param("i", $orderID);
     $stmt->execute();
     $result = $stmt->get_result();
     $order = $result->fetch_assoc();
+
+    # 0 (false) is takeout, 1 (true) is delivery
     $orderType = $order['delivery'] ? 'DELIVERY' : 'TAKEOUT';
     $price = $order['total_price'];
     $stmt->close();
 
+    # Iterate over all the items inside of the order and create the relevant elements.
   function checkoutMaker() {
     $orderID = $_COOKIE['order'];
     global $db;
@@ -45,6 +56,7 @@
         $itemID = $resultItem['itemID'];
         $qty = $resultItem['qty'];
         
+        # Get the item details from the database.
         $stmt = $db->prepare("SELECT name, price, image FROM menu_items WHERE itemID = ?");
         $stmt->bind_param("i", $itemID);
         $stmt->execute();
@@ -52,10 +64,12 @@
         $item = $result->fetch_assoc();
         $stmt->close();
         
+        # Extract the item details.
         $name = $item['name'];
         $price = $item['price'];
         $img = $item['image'];
         
+        # Reuse custom JS WebComponent to create the checkout item.
         echo "<cart-item checkout='true' id='order-item-$itemID' name='$name' price='$price' qty='$qty' img='$img'></cart-item>";
     }
 }
@@ -116,6 +130,7 @@
 
         <div class="order">
             <div class="order-items">
+                <!-- This calls the previously defined checkoutMaker. -->
                 <?php echo checkoutMaker(); ?>
             </div>
             <div class="order-summary">
@@ -126,6 +141,7 @@
                 </div>
                 <div class="order-summary-line">
                     <h3>ETA</h3>
+                    <!-- Pick random ETA time since we aren't a real pizza shop. -->
                     <p><?php echo date('H:i', strtotime('+10 minutes'));?></p>
                 </div>
                 <div class="order-summary-line order-total">

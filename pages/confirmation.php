@@ -1,11 +1,20 @@
 <?php 
-unset($_COOKIE['order']);
-setcookie('order', '', -1, '/');
-if (array_key_exists('order', $_GET)) {
+// Written by Libert & Gabe
+
+// The order cookie is unset to clear the order.
+if (isset($_COOKIE['order'])) {
+    unset($_COOKIE['order']);
+    setcookie('order', '', -1, '/');
+}
+
+// The information about the order is fetched from the URL parameters.
+if (array_key_exists('order', $_GET) && array_key_exists('type', $_GET) && array_key_exists('total', $_GET)) {
     $orderID = $_GET['order'];
     $orderType = $_GET['type'];
     $total = $_GET['total'];
+
 } else (
+    // If the URL parameters are not set, no use for this page, go back to landing.
     header("Location: ../pages/index.php")
 )
 ?>

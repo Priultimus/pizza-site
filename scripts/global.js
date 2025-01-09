@@ -1,3 +1,5 @@
+// Written by Libert
+
 let userModal = document.querySelector(".user-modal");
 let showModalButtons = document.querySelectorAll(".sign-in-link");
 let closeModalButtons = document.querySelectorAll(".modal-close");
@@ -17,13 +19,16 @@ mobileButton.addEventListener("click", (e) => {
     mobileOptions.classList.toggle("visible");
 });
 
-
+// This function is used to get the value of a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+
+// This function is used to handle the login process, so that we can convert
+// the user's order and cart to their logged in state.
 function handleLogin() {
     let hasOrder = getCookie('order');
     fetch('../server/cart.php?saveCart=true')
@@ -40,12 +45,15 @@ function handleLogin() {
     }
 }
 
+
+// This shows the modal provided.
 function showModal(modal) {
     console.log("modal arriving");
     modal.classList.add("visible");
     document.querySelector("body").classList.add("no-scroll")
 };
 
+// This hides any visible modal.
 function hideModal() {
     modal = document.querySelector(".modal.visible");
     if (!(modal)) {
@@ -56,6 +64,8 @@ function hideModal() {
     document.querySelector("body").classList.remove("no-scroll")
 }
 
+
+// This shows the sign up form and hides the sign in form.
 function showSignUpForm() {
     console.log("signInForm departing")
     signInForm.classList.remove("visible");
@@ -63,6 +73,7 @@ function showSignUpForm() {
     signUpForm.classList.add("visible");
 }
 
+// This shows the sign in form and hides the sign up form.
 function showSignInForm() {
     console.log("signUpForm departing")
     signUpForm.classList.remove("visible");
@@ -70,14 +81,18 @@ function showSignInForm() {
     signInForm.classList.add("visible");
 }
 
+// If the user presses the escape key, the modal will close.
 window.addEventListener("keydown", (e) => {
     e.key === "Escape" ? hideModal() : null
 });
 
+// All buttons that can show the modal get the event listener here.
 showModalButtons.forEach(button => button.addEventListener("click", (e) => {
     showSignInForm();
     showModal(userModal)
 }));
+
+// Add event listener for mobile buttons too.
 let mobileSignUp = document.getElementById("mobile-sign-up");
 if (mobileSignUp) {
     mobileSignUp.addEventListener("click", (e) => {

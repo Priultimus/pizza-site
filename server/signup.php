@@ -1,6 +1,6 @@
-<!-- Code Developed by Gabe -->
 <?php
 
+// <!-- Code Developed by Gabe -->
 // Include the database connection file to establish a connection to the database.
 require_once('../database/database.php');
 $db = db_connect();

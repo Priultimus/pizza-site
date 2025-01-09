@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="../css/orderModal.css">
+<!-- Allows the user to search for addresses and have them autofill. -->
 <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.24/web.js"></script>
 <div class="modal order-modal">
     <!-- Order Form -->

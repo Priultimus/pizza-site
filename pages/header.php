@@ -1,11 +1,16 @@
 <?php 
+
+// This starts the session if it hasn't been already.
+// PHP doesn't like it if you try to start the session when the headers 
+// have already been sent, so we check if the headers have been sent first.
 if (!(headers_sent())) {
     session_start();
 }
 
+// This checks if the user does not have a temporary session nor a real one.
 if (!isset($_SESSION['tempID'])) {
     if (!isset($_SESSION['loginID'])) {
-        
+        // If not, create a temporary session.
         require_once('../database/database.php');
         $db = db_connect();
         $stmt = $db->prepare("INSERT INTO tempLogins (tempID) VALUES (NULL)");
@@ -13,15 +18,20 @@ if (!isset($_SESSION['tempID'])) {
         $tempID = $stmt->insert_id;
         $stmt->close();
         $_SESSION['tempID'] = $tempID;
-        echo "<script>console.log('new temp id $tempID');</script>";
     }
+
+// If the user has a temporary session but not a real one, we just save it.
 } else if (isset($_SESSION['tempID'])) {
     $tempID = $_SESSION['tempID'];
 }
+
+// Pre-set these variables in case there is no login.
 $href = '#';
 $text = 'SIGN IN';
 $class = 'sign-in-link';
 $loggedIn = false;
+
+// If the user has a login session, we set the variables to reflect that.
 if (isset($_SESSION['loginID'])) {
     $loginId = $_SESSION['loginID'];
     $href = '../server/logout.php';
@@ -29,6 +39,8 @@ if (isset($_SESSION['loginID'])) {
     $text = 'SIGNED IN AS: ' . $name;
     $class = 'signed-in-link';
     $loggedIn = true;
+
+    // This allows the client-side JS to know the user is logged in.
     echo "<script>let loggedIn = true;</script>";
 } else {
     echo "<script>let loggedIn = false;</script>";
@@ -39,9 +51,19 @@ if (isset($_SESSION['loginID'])) {
 <link rel="stylesheet" type="text/css" href="../css/globals.css">
 <script src="../scripts/global.js" defer></script>
 <?php 
+// This scode is down here because it can't run without a function from global.js
+// What this does is it checks if there is both a temporary session and a login session,
+// because if there is, the user has just logged in, and we need to switch their 
+// information over from being temporary to being permanent.
   if (isset($_SESSION['tempID']) && isset($_SESSION['loginID'])) {
+    
+    // We have to wait for the site to loads before executing this code, since otherwise it will not work.
     echo "<script>document.addEventListener('DOMContentLoaded', () => {handleLogin();});</script>";
+
+    // Occasionally, the user's temporary session can get deleted BEFORE we take their cart inforation and
+    // merge it into their proper login. So we save the old temporary ID just in case.
     $_SESSION['oldTempID'] = $_SESSION['tempID'];
+    // Delete the old session.
     unset($_SESSION['tempID']);
 }
 
@@ -126,7 +148,8 @@ if (isset($_SESSION['loginID'])) {
     </div>
 </header>
 <nav class="account-options">
-        <?php if($loggedIn) {
+        <?php if ($loggedIn) {
+            // Display the correct elements if the user is logged in.
         echo "<p class='account-info mobile'>$name</p>
            <hr>
           <a class='account-option mobile sign-out-link' href='$href'>Sign-out</a>";

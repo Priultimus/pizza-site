@@ -1,8 +1,11 @@
 <?php 
+// Written by Libert
 
 require_once('../database/database.php');
 $db = db_connect();
 
+
+// This looks for categories in the database and creates buttons for them dynamically.
 function getCategories($picked = null) {
     $query = 'SELECT DISTINCT category FROM menu_items';
     global $db;
@@ -18,6 +21,8 @@ function getCategories($picked = null) {
     }
 }
 
+// This function calculates the rating of an item based on the average rating of all reviews.
+// There is definitely a better way to do this, but I was in a rush, forgive me please
 function calcRating($rating) {
   if (empty($rating) || $rating >= 5) {
             $rating = 5; // :)
@@ -45,6 +50,7 @@ function calcRating($rating) {
       return $rating;
 }
 
+// Ensure the item ID is actually one from the database
 function itemIdExists($itemId) {
     $query = "SELECT * FROM menu_items WHERE itemID = $itemId";
     global $db;
@@ -52,6 +58,7 @@ function itemIdExists($itemId) {
     return mysqli_num_rows($result) > 0;
 }
 
+// Grab all the reviews of a particular item
 function fetchMenuItemReviews($menuItemID) {
     $query = "SELECT * FROM reviews WHERE itemID = $menuItemID ORDER BY review_datetime DESC";
     global $db;
@@ -77,6 +84,8 @@ function fetchMenuItemReviews($menuItemID) {
     return $reviews;
 }
 
+// This creates the entire review element for a particular menu item, including all it's reviews
+// AND the create review form.
 function returnWholeReviewElement($itemId) {
     $res = "<div class='menu-card-reviews'>
       <h1 class='reviews-title'>ITEM REVIEWS</h1>
@@ -129,6 +138,7 @@ function returnWholeReviewElement($itemId) {
         
 }
 
+// This creates the menu item element with all of the appropriate information that's provided.
 function menuItemMaker($itemId, $name, $desc, $price, $category, $rating, $image) {
     $rating = calcRating($rating);
     return "<div id='menu-$itemId' data-name='$name' data-description-'$desc' data-price='$price' data-category='$category' data-img='$image' class='menu-card'>
@@ -151,6 +161,7 @@ function menuItemMaker($itemId, $name, $desc, $price, $category, $rating, $image
             </div>";
 }
 
+// This finds a menu item by it's ID, and uses the menu item maker ^ above to return it's proper HTML.
 function fetchMenuItemById($itemId) {
     $query = "SELECT * FROM menu_items WHERE itemID = $itemId";
     global $db;
@@ -168,6 +179,8 @@ function fetchMenuItemById($itemId) {
     return menuItemMaker($itemId, $name, $desc, $price, $category, $rating, $image);
 }
 
+// This looks for menu items by their category, and returns all that match.
+// This is how the category buttons work!
 function fetchMenuItemsByCategory($category) {
     if ($category == "all") {
         $query = "SELECT * FROM menu_items";
@@ -193,6 +206,8 @@ function fetchMenuItemsByCategory($category) {
     return $menuItems;
 }
 
+// This searches for a particular item in the menu and if it has a category it filters by that too.
+// I suspect this might not be SQL injection safe.
 function fetchMenuItemsBySearch($searchQuery, $category = null) {
   if (isset($category) && $category != "all") {
     $query = "SELECT * FROM menu_items WHERE (name LIKE '%$searchQuery%' OR description LIKE '%$searchQuery%') AND category = '$category'";
@@ -219,6 +234,7 @@ function fetchMenuItemsBySearch($searchQuery, $category = null) {
     return $menuItems;
 }
 
+// This gets the top 3 items with the highest reviews to put on the front page.
 function fetchHighlights($limit = 3) {
     $query = "SELECT m.itemID as itemID, m.name as name, m.description as description, m.category as category, m.image as image, ROUND(AVG(r.rating), 1) as rating FROM menu_items as m LEFT JOIN reviews as r on m.itemID = r.itemID GROUP BY m.itemID, m.name, m.description, m.category, m.image ORDER BY rating DESC LIMIT $limit";
     global $db;
